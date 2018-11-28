@@ -6,10 +6,32 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,maximum-scale=2">
     <link rel="stylesheet" type="text/css" media="screen" href="{{ '/assets/css/style.css?v=' | append: site.github.build_revision | relative_url }}">
-    <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/custom.css">
     {% include mathjax.html %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="/assets/js/lang-tabs.js"></script>
+    <script type="text/javascript">
+      // Adapted from Spark project:
+      // https://github.com/apache/spark-website/blob/asf-site/js/lang-tabs.js
+
+      function changeLanguage(lang) {
+          return function(e) {
+              e.preventDefault();
+              var scrollOffset = $(this).offset().top - $(document).scrollTop();
+              $(".tab-pane").removeClass("active");
+              $(".tab-pane-" + lang).addClass("active");
+              $(".lang-tab").removeClass("active");
+              $(".lang-tab-" + lang).addClass("active");
+              $(document).scrollTop($(this).offset().top - scrollOffset);
+          };
+      }
+
+      $(function() {
+          var languages = ["macaulay2", "matlab", "julia"];
+          for (var i = 0; i < languages.length; i++) {
+              var lang = languages[i];
+              $(".lang-tab-" + lang).click(changeLanguage(lang));
+          }
+      });
+    </script>
 {% seo %}
   </head>
 
