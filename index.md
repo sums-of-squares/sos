@@ -13,6 +13,7 @@ There should be whitespace between paragraphs. We recommend including a README, 
 Math example:
 $$ r = h = \sqrt{\frac {1} {2}} = \sqrt{\frac {N} {N+1}} \sqrt{\frac {N+1} {2N}} $$
 
+Diego's first commit
 
 # Header 1
 
