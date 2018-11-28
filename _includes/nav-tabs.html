@@ -1,0 +1,31 @@
+<ul class="nav nav-tabs">
+  <li class="lang-tab lang-tab-macaulay2 active"><a href="#">Macaulay2</a></li>
+  <li class="lang-tab lang-tab-matlab"><a href="#">Matlab</a></li>
+  <li class="lang-tab lang-tab-julia"><a href="#">Julia</a></li>
+</ul>
+
+<div class="tab-content">
+<div class="tab-pane tab-pane-macaulay2 active">
+<div class="code-tab">
+{% highlight text %}
+{{ include.macaulay2 }}
+{% endhighlight %}
+</div>
+</div>
+
+<div class="tab-pane tab-pane-matlab">
+<div class="code-tab">
+{% highlight matlab %}
+{{ include.matlab }}
+{% endhighlight %}
+</div>
+</div>
+
+<div class="tab-pane tab-pane-julia">
+<div class="code-tab">
+{% highlight julia %}
+{{ include.julia }}
+{% endhighlight %}
+</div>
+</div>
+</div>

@@ -1,3 +1,6 @@
+// Adapted from Spark project:
+// https://github.com/apache/spark-website/blob/asf-site/js/lang-tabs.js
+
 function changeLanguage(lang) {
     return function(e) {
         e.preventDefault();
@@ -7,11 +10,11 @@ function changeLanguage(lang) {
         $(".lang-tab").removeClass("active");
         $(".lang-tab-" + lang).addClass("active");
         $(document).scrollTop($(this).offset().top - scrollOffset);
-    }
+    };
 }
 
 $(function() {
-    var languages = ["scala", "java", "python"];
+    var languages = ["macaulay2", "matlab", "julia"];
     for (var i = 0; i < languages.length; i++) {
         var lang = languages[i];
         $(".lang-tab-" + lang).click(changeLanguage(lang));
