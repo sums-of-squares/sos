@@ -4,7 +4,7 @@ layout: default
 
 # Introduction
 
-In this guide we will explain how to perform basic SOS computations using the following software:
+In this guide we explain how to perform basic SOS computations using the following tools:
 
 - [SOSTOOLS](https://www.cds.caltech.edu/sostools/): Matlab
 - [SOS.m2](https://github.com/parrilo/SOSm2): Macaulay2
@@ -18,7 +18,7 @@ and
 # Installation
 
 
-# Example 1: Checking if polynomial is sum-of-squares
+# Example 1: Checking if a polynomial is SOS
 
 Here we find an SOS decomposition for the polynomial
 $2 x^4 + 2 x^3 y - x^2 y^2 + 5 y^4$.
@@ -222,15 +222,15 @@ using Mosek
 # Example 3: Global polynomial optimization
 
 Consider the polynomial 
-$p = x^4+x^2-3 x^2 z^2+z^6$.
-We may find a lower bound on $p$ by looking for the largest value of $t$ that makes $p - t$ is a sum-of-squares.
+$f = x^4+x^2-3 x^2 z^2+z^6$.
+We may find a lower bound on $p$ by looking for the largest value of $t$ that makes $f - t$ is a sum-of-squares.
 This can be is a parametric SOS problem
 
 <!-- +++++++++++++ MACAULAY2 +++++++++++++ -->
 {% capture macaulay2_code %}
 R = QQ[x,z][t];
-p = x^4+x^2-3*x^2*z^2+z^6
-sol = solveSOS (p-t, -t, RoundTol=>12);
+f = x^4+x^2-3*x^2*z^2+z^6
+sol = solveSOS (f-t, -t, RoundTol=>12);
 sol#Parameters
 
 -- returns the rational lower bound -729/4096
@@ -241,8 +241,8 @@ sol#Parameters
 syms x z t;
 vartable = [x, z];
 prog = sosprogram(vartable);
-p = x^4+x^2-3*x^2*z^2+z^6
-prog = sosineq(prog,p-t); % p-t>=0
+f = x^4+x^2-3*x^2*z^2+z^6
+prog = sosineq(prog,f-t); % f-t>=0
 prog = sossolve(prog);
 
 % Returns the lower bound -.177979
@@ -261,13 +261,13 @@ using Mosek
 
 {% include nav-tabs.html macaulay2=macaulay2_code matlab=matlab_code julia=julia_code %}
 
-Alternatively, all software have a simplified notation for finding this lower bound.
+Alternatively, all tools have a simplified way for finding this lower bound.
 
 <!-- +++++++++++++ MACAULAY2 +++++++++++++ -->
 {% capture macaulay2_code %}
 R = QQ[x,z];
-p = x^4+x^2-3*x^2*z^2+z^6
-(t,sol) = lowerBound (p, RoundTol=>12);
+f = x^4+x^2-3*x^2*z^2+z^6
+(t,sol) = lowerBound (f, RoundTol=>12);
 
 -- returns t = -729/4096
 {% endcapture %}
@@ -275,8 +275,8 @@ p = x^4+x^2-3*x^2*z^2+z^6
 <!-- ++++++++++++++ MATLAB +++++++++++++++ -->
 {% capture matlab_code %}
 syms x z;
-p = x^4+x^2-3*x^2*z^2+z^6
-[t,vars,xopt] = findbound(p)
+f = x^4+x^2-3*x^2*z^2+z^6
+[t,vars,xopt] = findbound(f)
 
 % Returns t = -.177979
 {% endcapture %}
@@ -296,8 +296,9 @@ using Mosek
 
 # Example 4: Constrained polynomial optimization
 
-We illustrate how to compute the SOS relaxation of degree-$2d$.
-First we consider an example with only equalities constraints:
+Consider minimizing a polynomial $f(x)$ subject to equations $h_i(x)=0$ and inequalities $g_j(x)\geq 0$.
+Given a degree bound-$2d$, we can find a lower bound based on SOS.
+The next example has only equalities constraints:
 $$
     \min_{x,y} \quad x-y
     \quad\text{ s.t. }\quad 
@@ -310,7 +311,7 @@ R = QQ[x,y];
 d = 1;
 f = x - y;
 h = matrix{{x^2 - x, y^2 - y}};
-(t,sol,mult) = lowerBound (p, h, 2*d);
+(t,sol,mult) = lowerBound (f, h, 2*d);
 
 -- returns t = -1
 {% endcapture %}
@@ -339,7 +340,7 @@ using Mosek
 
 {% include nav-tabs.html macaulay2=macaulay2_code matlab=matlab_code julia=julia_code %}
 
-Now we consider an input with equalities and  inequalities:
+Now consider a problem with equalities and  inequalities:
 $$
     \min_{x,y} \quad x+y
     \quad\text{ s.t. }\quad 
