@@ -4,7 +4,19 @@ layout: default
 
 # Introduction
 
-# Software to install
+In this guide we will explain how to perform basic SOS computations using the following software:
+
+- [SOSTOOLS (Matlab)](https://www.cds.caltech.edu/sostools/): 
+- [SOS.m2 (Macaulay2)](https://github.com/parrilo/SOSm2):
+- [SumOfSquares.jl (Julia)](https://github.com/JuliaOpt/SumOfSquares.jl):
+
+We point out that other SOS tools are available, such as the Matlab libraries
+[YALMIP](https://yalmip.github.io/tutorial/sumofsquaresprogramming/)
+and
+[GloptiPoly](http://homepages.laas.fr/henrion/software/gloptipoly/).
+
+# Installation
+
 
 # Example 1: Checking if polynomial is sum-of-squares
 
@@ -16,7 +28,10 @@ needsPackage( "SOS" )
 
 R = QQ[x,y];
 p = 2*x^4 + 2*x^3*y - x^2*y^2 + 5*y^4;
-s = sosPoly solveSOS p;
+sosPoly solveSOS p;
+
+% This returns the decomposition
+% p = 5 (-(11/25)*x^2+y^2)^2 +  17/5*(5/17*x^2+x*y)^2 + 1568/2125 * x^4
 
 {% endcapture %}
 
@@ -60,14 +75,13 @@ using Mosek
 
 {% include nav-tabs.html macaulay2=macaulay2_code matlab=matlab_code julia=julia_code %}
 
-# Checking if polynomial is sum-of-squares
+We now consider the Motzkin polynomial, for which no SOS decomposition exists.
 
 {% capture macaulay2_code %}
 needsPackage( "SOS", Configuration=>{"CSDPexec"=>"SDPsolvers/csdp","SDPAexec"=>"SDPsolvers/sdpa"} )
 
 -- Motzkin polynomial
 R = QQ[x,y,z]
-h = x^2 + y^2 + z^2
 f1 = library("Motzkin",R)
 sol1 = solveSOS (f1*h, Solver=>"CSDP")
 g1 = sosPoly sol1
