@@ -17,7 +17,7 @@ and
 
 # Installation and configuration
 
-The following commands can be typed to install each of the tools.
+To install the tools, type the following commands.
 
 <!-- +++++++++++++ MACAULAY2 +++++++++++++ -->
 {% capture macaulay2_code %}
@@ -27,13 +27,13 @@ installPackage "SOS"
 
 <!-- ++++++++++++++ MATLAB +++++++++++++++ -->
 {% capture matlab_code %}
-usual Matlab a mess
+usual Matlab mess
 
 {% endcapture %}
 
 <!-- +++++++++++++++ JULIA +++++++++++++++ -->
 {% capture julia_code %}
-add SumOfSquares
+] add SumOfSquares
 
 {% endcapture %}
 
@@ -196,11 +196,11 @@ TODO
 
 {% include nav-tabs.html macaulay2=macaulay2_code matlab=matlab_code julia=julia_code %}
 
-Finally, we do parameter optimization with multiple SOS constraints.
+Finally, we consider a problem involving multiple SOS constraints.
 
 <!-- +++++++++++++ MACAULAY2 +++++++++++++ -->
 {% capture macaulay2_code %}
-This is not yet possible to do in Macaulay2.
+This is not yet possible in Macaulay2.
 {% endcapture %}
 
 <!-- ++++++++++++++ MATLAB +++++++++++++++ -->
@@ -341,7 +341,7 @@ $$
 
 <!-- +++++++++++++ MACAULAY2 +++++++++++++ -->
 {% capture macaulay2_code %}
-This is not yet possible to do in Macaulay2.
+This is not yet possible in Macaulay2.
 {% endcapture %}
 
 <!-- ++++++++++++++ MATLAB +++++++++++++++ -->
