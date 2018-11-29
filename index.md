@@ -21,7 +21,7 @@ and
 # Example 1: Checking if polynomial is sum-of-squares
 
 Here we find an SOS decomposition for the polynomial
-$p = 2 x^4 + 2 x^3 y - x^2 y^2 + 5 y^4$.
+$2 x^4 + 2 x^3 y - x^2 y^2 + 5 y^4$.
 
 <!-- +++++++++++++ MACAULAY2 +++++++++++++ -->
 {% capture macaulay2_code %}
@@ -124,8 +124,8 @@ sol#Parameters
 
 <!-- ++++++++++++++ MATLAB +++++++++++++++ -->
 {% capture matlab_code %}
-syms x y z s t;
-vartable = [x, y, z];
+syms x y s t;
+vartable = [x, y];
 prog = sosprogram(vartable);
 p = s*x^6+t*y^6-x^4*y^2-x^2*y^4-x^4+3*x^2*y^2-y^4-x^2-y^2+1
 prog = sosineq(prog,p);  % p(x,y)>=0
@@ -148,7 +148,7 @@ using Mosek
 {% include nav-tabs.html macaulay2=macaulay2_code matlab=matlab_code julia=julia_code %}
 
 We now do parameter optimization.
-Namely, we find the smallest value of $t$ that makes the following polynomial a sum-of-squares.
+Namely, among the values of $s,t$ that make the polynomial a sum-of-squares, we look for values with the smallest value of $t$.
 
 <!-- +++++++++++++ MACAULAY2 +++++++++++++ -->
 {% capture macaulay2_code %}
@@ -164,8 +164,8 @@ sol#Parameters
 
 <!-- ++++++++++++++ MATLAB +++++++++++++++ -->
 {% capture matlab_code %}
-syms x y z s t;
-vartable = [x, y, z];
+syms x y s t;
+vartable = [x, y];
 prog = sosprogram(vartable);
 p = s*x^6+t*y^6-x^4*y^2-x^2*y^4-x^4+3*x^2*y^2-y^4-x^2-y^2+1
 prog = sosineq(prog,p); % p>=0
@@ -188,12 +188,16 @@ using Mosek
 {% include nav-tabs.html macaulay2=macaulay2_code matlab=matlab_code julia=julia_code %}
 
 Finally, we do parameter optimization with multiple SOS constraints.
+
+<!-- +++++++++++++ MACAULAY2 +++++++++++++ -->
+{% capture macaulay2_code %}
 This is not yet possible to do in Macaulay2.
+{% endcapture %}
 
 <!-- ++++++++++++++ MATLAB +++++++++++++++ -->
 {% capture matlab_code %}
-syms x y z s t;
-vartable = [x, y, z];
+syms x y s t;
+vartable = [x, y];
 prog = sosprogram(vartable);
 p = x^4*y^2 + x^2*y^4 - 3*x^2*y^2 + 1
 prog = sosineq(prog,p); % p>=0
@@ -213,4 +217,80 @@ using Mosek
 
 {% endcapture %}
 
-{% include nav-tabs.html matlab=matlab_code julia=julia_code %}
+{% include nav-tabs.html macaulay2=macaulay2_code matlab=matlab_code julia=julia_code %}
+
+# Example 3: Global polynomial optimization
+
+Consider the polynomial 
+$p = x^4+x^2-3*x^2*z^2+z^6$.
+We may find a lower bound on $p$ by looking for the largest value of $t$ that makes $p - t$ is a sum-of-squares.
+This can be is a parametric SOS problem
+
+<!-- +++++++++++++ MACAULAY2 +++++++++++++ -->
+{% capture macaulay2_code %}
+R = QQ[x,z][t];
+p = x^4+x^2-3*x^2*z^2+z^6
+sol = solveSOS (p-t, -t, RoundTol=>12);
+sol#Parameters
+
+-- returns the rational lower bound -729/4096
+{% endcapture %}
+
+<!-- ++++++++++++++ MATLAB +++++++++++++++ -->
+{% capture matlab_code %}
+syms x z t;
+vartable = [x, z];
+prog = sosprogram(vartable);
+p = x^4+x^2-3*x^2*z^2+z^6
+prog = sosineq(prog,p-t); % p-t>=0
+prog = sossolve(prog);
+
+% Returns the lower bound -.177979
+{% endcapture %}
+
+<!-- +++++++++++++++ JULIA +++++++++++++++ -->
+{% capture julia_code %}
+using MultivariatePolynomials
+using JuMP
+using PolyJuMP
+using SumOfSquares
+using DynamicPolynomials
+using Mosek
+
+{% endcapture %}
+
+{% include nav-tabs.html macaulay2=macaulay2_code matlab=matlab_code julia=julia_code %}
+
+Alternatively, all software have a simplified notation for finding this lower bound.
+
+<!-- +++++++++++++ MACAULAY2 +++++++++++++ -->
+{% capture macaulay2_code %}
+R = QQ[x,z];
+p = x^4+x^2-3*x^2*z^2+z^6
+(t,sol) = lowerBound (p, RoundTol=>12);
+
+-- returns t = -729/4096
+{% endcapture %}
+
+<!-- ++++++++++++++ MATLAB +++++++++++++++ -->
+{% capture matlab_code %}
+syms x z;
+p = x^4+x^2-3*x^2*z^2+z^6
+[t,vars,xopt] = findbound(p)
+
+% Returns t = -.177979
+{% endcapture %}
+
+<!-- +++++++++++++++ JULIA +++++++++++++++ -->
+{% capture julia_code %}
+using MultivariatePolynomials
+using JuMP
+using PolyJuMP
+using SumOfSquares
+using DynamicPolynomials
+using Mosek
+
+{% endcapture %}
+
+{% include nav-tabs.html macaulay2=macaulay2_code matlab=matlab_code julia=julia_code %}
+
