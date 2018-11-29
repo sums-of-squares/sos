@@ -6,9 +6,9 @@ layout: default
 
 In this guide we will explain how to perform basic SOS computations using the following software:
 
-- [SOSTOOLS (Matlab)](https://www.cds.caltech.edu/sostools/): 
-- [SOS.m2 (Macaulay2)](https://github.com/parrilo/SOSm2):
-- [SumOfSquares.jl (Julia)](https://github.com/JuliaOpt/SumOfSquares.jl):
+- [SOSTOOLS](https://www.cds.caltech.edu/sostools/): Matlab
+- [SOS.m2](https://github.com/parrilo/SOSm2): Macaulay2
+- [SumOfSquares.jl](https://github.com/JuliaOpt/SumOfSquares.jl): Julia
 
 We point out that other SOS tools are available, such as the Matlab libraries
 [YALMIP](https://yalmip.github.io/tutorial/sumofsquaresprogramming/)
@@ -23,46 +23,41 @@ and
 Here we find an SOS decomposition for the polynomial
 $p = 2*x^4 + 2*x^3*y - x^2*y^2 + 5*y^4$.
 
+<!-- +++++++++++++ MACAULAY2 +++++++++++++ -->
 {% capture macaulay2_code %}
-needsPackage( "SOS" )
+needsPackage "SOS"
 
 R = QQ[x,y];
 p = 2*x^4 + 2*x^3*y - x^2*y^2 + 5*y^4;
-sosPoly solveSOS p;
+sosPoly solveSOS p
 
-% This returns the decomposition
-% p = 5 (-(11/25)*x^2+y^2)^2 +  17/5*(5/17*x^2+x*y)^2 + 1568/2125 * x^4
+-- returns the rational SOS decomposition
+-- p = 5 (-(11/25)*x^2+y^2)^2 +  17/5*(5/17*x^2+x*y)^2 + 1568/2125 * x^4
 
 {% endcapture %}
 
+<!-- ++++++++++++++ MATLAB +++++++++++++++ -->
 {% capture matlab_code %}
-% SOSDEMO1 --- Sum of Squares Test
-% Section 3.1 of SOSTOOLS User's Manual
-%
-
 clear; echo on;
 syms x y;
 vartable = [x, y];
-% =============================================
 % First, initialize the sum of squares program
 prog = sosprogram(vartable);   % No decision variables.
 
-% =============================================
 % Next, define the inequality
 
 % p(x,y) >=  0
 p = 2*x^4 + 2*x^3*y - x^2*y^2 + 5*y^4;
 prog = sosineq(prog,p);
 
-% =============================================
 % And call solver
 prog = sossolve(prog);
 
-% =============================================
 % Program is feasible, thus p(x,y) is an SOS.
 echo off;
 {% endcapture %}
 
+<!-- +++++++++++++++ JULIA +++++++++++++++ -->
 {% capture julia_code %}
 using MultivariatePolynomials
 using JuMP
@@ -77,16 +72,18 @@ using Mosek
 
 We now consider the Motzkin polynomial, for which no SOS decomposition exists.
 
+<!-- +++++++++++++ MACAULAY2 +++++++++++++ -->
 {% capture macaulay2_code %}
-needsPackage( "SOS", Configuration=>{"CSDPexec"=>"SDPsolvers/csdp","SDPAexec"=>"SDPsolvers/sdpa"} )
+needsPackage "SOS"
 
--- Motzkin polynomial
 R = QQ[x,y,z]
-f1 = library("Motzkin",R)
-sol1 = solveSOS (f1*h, Solver=>"CSDP")
-g1 = sosPoly sol1
+p = x^4*y^2+x^2*y^4-3*x^2*y^2+1
+sosPoly solveSOS p
+
+-- returns the message "dual infeasible"
 {% endcapture %}
 
+<!-- ++++++++++++++ MATLAB +++++++++++++++ -->
 {% capture matlab_code %}
 % SOSDEMO1 --- Sum of Squares Test
 % Section 3.1 of SOSTOOLS User's Manual
@@ -95,27 +92,23 @@ g1 = sosPoly sol1
 clear; echo on;
 syms x1 x2;
 vartable = [x1, x2];
-% =============================================
 % First, initialize the sum of squares program
 prog = sosprogram(vartable);   % No decision variables.
 
-% =============================================
 % Next, define the inequality
 
 % p(x1,x2) >=  0
 p = 2*x1^4 + 2*x1^3*x2 - x1^2*x2^2 + 5*x2^4;
 prog = sosineq(prog,p);
 
-
-% =============================================
 % And call solver
 prog = sossolve(prog);
 
-% =============================================
 % Program is feasible, thus p(x1,x2) is an SOS.
 echo off;
 {% endcapture %}
 
+<!-- +++++++++++++++ JULIA +++++++++++++++ -->
 {% capture julia_code %}
 using MultivariatePolynomials
 using JuMP
@@ -124,32 +117,8 @@ using SumOfSquares
 using DynamicPolynomials
 using Mosek
 
-# Create symbolic variables (not JuMP decision variables)
-@polyvar x1 x2
-
-# Create a Sum of Squares JuMP model with the Mosek solver
-m = SOSModel(solver = MosekSolver())
-
-# Create a JuMP decision variable for the lower bound
-@variable m γ
-
-# f(x) is the Goldstein-Price function
-f1 = x1+x2+1
-f2 = 19-14*x1+3*x1^2-14*x2+6*x1*x2+3*x2^2
-f3 = 2*x1-3*x2
-f4 = 18-32*x1+12*x1^2+48*x2-36*x1*x2+27*x2^2
-
-f = (1+f1^2*f2)*(30+f3^2*f4)
-
-# Constraints f(x) - γ to be sum of squares
-@constraint m f >= γ
-
-@objective m Max γ
-
-status = solve(m)
-
-# The lower bound found is 3
-println(getobjectivevalue(m))
 {% endcapture %}
 
 {% include nav-tabs.html macaulay2=macaulay2_code matlab=matlab_code julia=julia_code %}
+
+# Example 2: 
