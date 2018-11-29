@@ -222,7 +222,7 @@ using Mosek
 # Example 3: Global polynomial optimization
 
 Consider the polynomial 
-$p = x^4+x^2-3*x^2*z^2+z^6$.
+$p = x^4+x^2-3 x^2 z^2+z^6$.
 We may find a lower bound on $p$ by looking for the largest value of $t$ that makes $p - t$ is a sum-of-squares.
 This can be is a parametric SOS problem
 
@@ -294,3 +294,94 @@ using Mosek
 
 {% include nav-tabs.html macaulay2=macaulay2_code matlab=matlab_code julia=julia_code %}
 
+# Example 4: Constrained polynomial optimization
+
+A polynomial optimization problem has the form
+$$ 
+    \min_{x} \quad f(x)
+    \quad\text{ s.t. }\quad 
+    h_i(x) = 0 \text{ for } 1\leq i\leq m,
+    \quad
+    g_j(x) \geq 0 \text{ for } 1\leq i\leq l
+$$
+We now illustrate how to compute the degree~$2d$ SOS relaxations.
+
+First we consider an example with only equalities constraints:
+$$
+    \min_{x,y} \quad x-y
+    \quad\text{ s.t. }\quad 
+    x^2 - x = y^2 - y = 0.
+$$
+
+<!-- +++++++++++++ MACAULAY2 +++++++++++++ -->
+{% capture macaulay2_code %}
+R = QQ[x,y];
+d = 1;
+f = x - y;
+h = matrix{{x^2 - x, y^2 - y}};
+(t,sol,mult) = lowerBound (p, h, 2*d);
+
+-- returns t = -1
+{% endcapture %}
+
+<!-- ++++++++++++++ MATLAB +++++++++++++++ -->
+{% capture matlab_code %}
+syms x y;
+d = 1;
+f = x - y;
+h = [x^2 - x, y^2 - y];
+[t,vars,xopt] = findbound(f, [], h, 2*d)
+
+% Returns t = -1
+{% endcapture %}
+
+<!-- +++++++++++++++ JULIA +++++++++++++++ -->
+{% capture julia_code %}
+using MultivariatePolynomials
+using JuMP
+using PolyJuMP
+using SumOfSquares
+using DynamicPolynomials
+using Mosek
+
+{% endcapture %}
+
+{% include nav-tabs.html macaulay2=macaulay2_code matlab=matlab_code julia=julia_code %}
+
+Now we consider an input with equalities and  inequalities:
+$$
+    \min_{x,y} \quad x+y
+    \quad\text{ s.t. }\quad 
+    x^2 + y^2 = 1, \;
+    y - x^2 = 0.5, \;
+    x \geq 0, \;
+    y \geq 0.5.
+$$
+
+<!-- +++++++++++++ MACAULAY2 +++++++++++++ -->
+{% capture macaulay2_code %}
+This is not yet possible to do in Macaulay2.
+{% endcapture %}
+
+<!-- ++++++++++++++ MATLAB +++++++++++++++ -->
+{% capture matlab_code %}
+syms x y;
+d = 2;
+f = x+y;
+g = [x, y-0.5];
+h = [x^2+y^2-1, y-x^2-0.5];
+[t,vars,opt] = findbound(f,g,h,2*d);
+
+% Returns t = 1.3911
+{% endcapture %}
+
+<!-- +++++++++++++++ JULIA +++++++++++++++ -->
+{% capture julia_code %}
+using MultivariatePolynomials
+using JuMP
+using PolyJuMP
+using SumOfSquares
+using DynamicPolynomials
+using Mosek
+
+{% endcapture %}
