@@ -6,6 +6,60 @@ layout: default
 
 # Software to install
 
+# Example 1: Checking if polynomial is sum-of-squares
+
+Here we find an SOS decomposition for the polynomial
+$p = 2*x^4 + 2*x^3*y - x^2*y^2 + 5*y^4$.
+
+{% capture macaulay2_code %}
+needsPackage( "SOS" )
+
+R = QQ[x,y];
+p = 2*x^4 + 2*x^3*y - x^2*y^2 + 5*y^4;
+s = sosPoly solveSOS p;
+
+{% endcapture %}
+
+{% capture matlab_code %}
+% SOSDEMO1 --- Sum of Squares Test
+% Section 3.1 of SOSTOOLS User's Manual
+%
+
+clear; echo on;
+syms x y;
+vartable = [x, y];
+% =============================================
+% First, initialize the sum of squares program
+prog = sosprogram(vartable);   % No decision variables.
+
+% =============================================
+% Next, define the inequality
+
+% p(x,y) >=  0
+p = 2*x^4 + 2*x^3*y - x^2*y^2 + 5*y^4;
+prog = sosineq(prog,p);
+
+% =============================================
+% And call solver
+prog = sossolve(prog);
+
+% =============================================
+% Program is feasible, thus p(x,y) is an SOS.
+echo off;
+{% endcapture %}
+
+{% capture julia_code %}
+using MultivariatePolynomials
+using JuMP
+using PolyJuMP
+using SumOfSquares
+using DynamicPolynomials
+using Mosek
+
+{% endcapture %}
+
+{% include nav-tabs.html macaulay2=macaulay2_code matlab=matlab_code julia=julia_code %}
+
 # Checking if polynomial is sum-of-squares
 
 {% capture macaulay2_code %}
