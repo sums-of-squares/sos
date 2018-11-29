@@ -15,8 +15,57 @@ We point out that other SOS tools are available, such as the Matlab libraries
 and
 [GloptiPoly](http://homepages.laas.fr/henrion/software/gloptipoly/).
 
-# Installation
+# Installation and configuration
 
+The following commands can be typed to install each of the tools.
+
+<!-- +++++++++++++ MACAULAY2 +++++++++++++ -->
+{% capture macaulay2_code %}
+installPackage "SOS"
+
+{% endcapture %}
+
+<!-- ++++++++++++++ MATLAB +++++++++++++++ -->
+{% capture matlab_code %}
+usual Matlab a mess
+
+{% endcapture %}
+
+<!-- +++++++++++++++ JULIA +++++++++++++++ -->
+{% capture julia_code %}
+add SumOfSquares
+
+{% endcapture %}
+
+{% include nav-tabs.html macaulay2=macaulay2_code matlab=matlab_code julia=julia_code %}
+
+Once installed, the following lines must be entered at the beginning of each session.
+
+<!-- +++++++++++++ MACAULAY2 +++++++++++++ -->
+{% capture macaulay2_code %}
+needsPackage "SOS"
+
+{% endcapture %}
+
+<!-- ++++++++++++++ MATLAB +++++++++++++++ -->
+{% capture matlab_code %}
+% add the SOSTOOLS to the matlab path
+addpath(genpath('/somepath/SOSTOOLS/'))
+
+{% endcapture %}
+
+<!-- +++++++++++++++ JULIA +++++++++++++++ -->
+{% capture julia_code %}
+using MultivariatePolynomials
+using JuMP
+using PolyJuMP
+using SumOfSquares
+using DynamicPolynomials
+using Mosek
+
+{% endcapture %}
+
+{% include nav-tabs.html macaulay2=macaulay2_code matlab=matlab_code julia=julia_code %}
 
 # Example 1: Checking if a polynomial is SOS
 
@@ -25,8 +74,6 @@ $2 x^4 + 2 x^3 y - x^2 y^2 + 5 y^4$.
 
 <!-- +++++++++++++ MACAULAY2 +++++++++++++ -->
 {% capture macaulay2_code %}
-needsPackage "SOS"
-
 R = QQ[x,y];
 p = 2*x^4 + 2*x^3*y - x^2*y^2 + 5*y^4;
 sosPoly solveSOS p
@@ -39,26 +86,15 @@ sosPoly solveSOS p
 <!-- ++++++++++++++ MATLAB +++++++++++++++ -->
 {% capture matlab_code %}
 syms x y;
-vartable = [x, y];
-% Initialize the sum of squares program
-prog = sosprogram(vartable);   % No decision variables.
-% Define the inequality
 p = 2*x^4 + 2*x^3*y - x^2*y^2 + 5*y^4;
-prog = sosineq(prog,p);  %p(x,y)>=0
-% Call solver
-prog = sossolve(prog);
+[Q,Z] = findsos(p);
 
 % Program is feasible, thus p(x,y) is an SOS.
 {% endcapture %}
 
 <!-- +++++++++++++++ JULIA +++++++++++++++ -->
 {% capture julia_code %}
-using MultivariatePolynomials
-using JuMP
-using PolyJuMP
-using SumOfSquares
-using DynamicPolynomials
-using Mosek
+TODO
 
 {% endcapture %}
 
@@ -68,8 +104,6 @@ We now consider the Motzkin polynomial, for which no SOS decomposition exists.
 
 <!-- +++++++++++++ MACAULAY2 +++++++++++++ -->
 {% capture macaulay2_code %}
-needsPackage "SOS"
-
 R = QQ[x,y]
 p = x^4*y^2 + x^2*y^4 - 3*x^2*y^2 + 1
 sosPoly solveSOS p
@@ -80,26 +114,15 @@ sosPoly solveSOS p
 <!-- ++++++++++++++ MATLAB +++++++++++++++ -->
 {% capture matlab_code %}
 syms x y;
-vartable = [x, y];
-% Initialize the sum of squares program
-prog = sosprogram(vartable);   % No decision variables.
-% Define the inequality
 p = x^4*y^2 + x^2*y^4 - 3*x^2*y^2 + 1
-prog = sosineq(prog,p);  % p(x,y)>=0
-% Call solver
-prog = sossolve(prog);
+[Q,Z] = findsos(p);
 
 % Program is infeasible.
 {% endcapture %}
 
 <!-- +++++++++++++++ JULIA +++++++++++++++ -->
 {% capture julia_code %}
-using MultivariatePolynomials
-using JuMP
-using PolyJuMP
-using SumOfSquares
-using DynamicPolynomials
-using Mosek
+TODO
 
 {% endcapture %}
 
@@ -112,11 +135,9 @@ $$ s x^6+t y^6-x^4 y^2-x^2 y^4-x^4+3 x^2 y^2-y^4-x^2-y^2+1 $$
 
 <!-- +++++++++++++ MACAULAY2 +++++++++++++ -->
 {% capture macaulay2_code %}
-needsPackage "SOS"
-
 R = QQ[x,y][s,t]
 p = s*x^6+t*y^6-x^4*y^2-x^2*y^4-x^4+3*x^2*y^2-y^4-x^2-y^2+1
-sol = sosPoly solveSOS p
+sol = solveSOS p
 sol#Parameters
 
 -- returns s = t = 135/4
@@ -136,24 +157,17 @@ prog = sossolve(prog);
 
 <!-- +++++++++++++++ JULIA +++++++++++++++ -->
 {% capture julia_code %}
-using MultivariatePolynomials
-using JuMP
-using PolyJuMP
-using SumOfSquares
-using DynamicPolynomials
-using Mosek
+TODO
 
 {% endcapture %}
 
 {% include nav-tabs.html macaulay2=macaulay2_code matlab=matlab_code julia=julia_code %}
 
 We now do parameter optimization.
-Namely, among the values of $s,t$ that make the polynomial a sum-of-squares, we look for values with the smallest value of $t$.
+Among the values of $s,t$ that make the polynomial a sum-of-squares, we look for those with the minimum value of $t$.
 
 <!-- +++++++++++++ MACAULAY2 +++++++++++++ -->
 {% capture macaulay2_code %}
-needsPackage "SOS"
-
 R = QQ[x,y][s,t]
 p = s*x^6+t*y^6-x^4*y^2-x^2*y^4-x^4+3*x^2*y^2-y^4-x^2-y^2+1
 sol = solveSOS(p,t)
@@ -176,12 +190,7 @@ prog = sossolve(prog);
 
 <!-- +++++++++++++++ JULIA +++++++++++++++ -->
 {% capture julia_code %}
-using MultivariatePolynomials
-using JuMP
-using PolyJuMP
-using SumOfSquares
-using DynamicPolynomials
-using Mosek
+TODO
 
 {% endcapture %}
 
@@ -208,12 +217,7 @@ prog = sossolve(prog);
 
 <!-- +++++++++++++++ JULIA +++++++++++++++ -->
 {% capture julia_code %}
-using MultivariatePolynomials
-using JuMP
-using PolyJuMP
-using SumOfSquares
-using DynamicPolynomials
-using Mosek
+TODO
 
 {% endcapture %}
 
@@ -250,12 +254,7 @@ prog = sossolve(prog);
 
 <!-- +++++++++++++++ JULIA +++++++++++++++ -->
 {% capture julia_code %}
-using MultivariatePolynomials
-using JuMP
-using PolyJuMP
-using SumOfSquares
-using DynamicPolynomials
-using Mosek
+TODO
 
 {% endcapture %}
 
@@ -283,12 +282,7 @@ f = x^4+x^2-3*x^2*z^2+z^6
 
 <!-- +++++++++++++++ JULIA +++++++++++++++ -->
 {% capture julia_code %}
-using MultivariatePolynomials
-using JuMP
-using PolyJuMP
-using SumOfSquares
-using DynamicPolynomials
-using Mosek
+TODO
 
 {% endcapture %}
 
@@ -329,12 +323,7 @@ h = [x^2 - x, y^2 - y];
 
 <!-- +++++++++++++++ JULIA +++++++++++++++ -->
 {% capture julia_code %}
-using MultivariatePolynomials
-using JuMP
-using PolyJuMP
-using SumOfSquares
-using DynamicPolynomials
-using Mosek
+TODO
 
 {% endcapture %}
 
@@ -369,12 +358,7 @@ h = [x^2+y^2-1, y-x^2-0.5];
 
 <!-- +++++++++++++++ JULIA +++++++++++++++ -->
 {% capture julia_code %}
-using MultivariatePolynomials
-using JuMP
-using PolyJuMP
-using SumOfSquares
-using DynamicPolynomials
-using Mosek
+TODO
 
 {% endcapture %}
 
