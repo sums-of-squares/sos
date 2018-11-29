@@ -296,16 +296,7 @@ using Mosek
 
 # Example 4: Constrained polynomial optimization
 
-A polynomial optimization problem has the form
-$$ 
-    \min_{x} \quad f(x)
-    \quad\text{ s.t. }\quad 
-    h_i(x) = 0 \text{ for } 1\leq i\leq m,
-    \quad
-    g_j(x) \geq 0 \text{ for } 1\leq i\leq l
-$$
-We now illustrate how to compute the degree~$2d$ SOS relaxations.
-
+We illustrate how to compute the SOS relaxation of degree-$2d$.
 First we consider an example with only equalities constraints:
 $$
     \min_{x,y} \quad x-y
@@ -385,3 +376,5 @@ using DynamicPolynomials
 using Mosek
 
 {% endcapture %}
+
+{% include nav-tabs.html macaulay2=macaulay2_code matlab=matlab_code julia=julia_code %}
