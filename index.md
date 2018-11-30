@@ -2,7 +2,7 @@
 layout: default
 ---
 
-# Introduction
+### Introduction
 
 In this guide we explain how to perform basic SOS computations using the following tools:
 
@@ -10,12 +10,12 @@ In this guide we explain how to perform basic SOS computations using the followi
 - [SOS.m2](https://github.com/parrilo/SOSm2): Macaulay2
 - [SumOfSquares.jl](https://github.com/JuliaOpt/SumOfSquares.jl): Julia
 
-We point out that other SOS tools are available, mainly in Matlab, such as 
+We point out that other SOS tools are available, mainly in Matlab, such as
 [YALMIP](https://yalmip.github.io/tutorial/sumofsquaresprogramming/)
 and
 [GloptiPoly](http://homepages.laas.fr/henrion/software/gloptipoly/).
 
-# Installation and configuration
+### Installation and configuration
 
 For installation, type the following commands.
 
@@ -67,7 +67,7 @@ using Mosek
 
 {% include nav-tabs.html macaulay2=macaulay2_code matlab=matlab_code julia=julia_code %}
 
-# Example 1: Checking if a polynomial is SOS
+### Example 1: Checking if a polynomial is SOS
 
 Here we find an SOS decomposition for the polynomial
 $2 x^4 + 2 x^3 y - x^2 y^2 + 5 y^4$.
@@ -143,7 +143,7 @@ solve(m)
 
 {% include nav-tabs.html macaulay2=macaulay2_code matlab=matlab_code julia=julia_code %}
 
-# Example 2: Parametric SOS problems
+### Example 2: Parametric SOS problems
 
 In the next example we consider the variables $s$, $t$ as parameters, and find values for them such that the following polynomial is a sum-of-squares.
 $$ s x^6+t y^6-x^4 y^2-x^2 y^4-x^4+3 x^2 y^2-y^4-x^2-y^2+1 $$
@@ -172,7 +172,17 @@ prog = sossolve(prog);
 
 <!-- +++++++++++++++ JULIA +++++++++++++++ -->
 {% capture julia_code %}
-TODO
+m = SOSModel(solver = MosekSolver())
+
+@polyvar x y
+@variable(m, s)
+@variable(m, t)
+
+p = s*x^6+t*y^6-x^4*y^2-x^2*y^4-x^4+3*x^2*y^2-y^4-x^2-y^2+1
+
+@constraint m p >= 0
+solve(m)
+println("Solution: [ $(getvalue(s)), $(getvalue(t)) ]")
 
 {% endcapture %}
 
@@ -205,8 +215,18 @@ prog = sossolve(prog);
 
 <!-- +++++++++++++++ JULIA +++++++++++++++ -->
 {% capture julia_code %}
-TODO
+m = SOSModel(solver = MosekSolver())
 
+@polyvar x y
+@variable(m, s)
+@variable(m, t)
+
+p = s*x^6+t*y^6-x^4*y^2-x^2*y^4-x^4+3*x^2*y^2-y^4-x^2-y^2+1
+
+@constraint m p >= 0
+@objective m Min s+t
+solve(m)
+println("Solution: [ $(getvalue(s)), $(getvalue(t)) ]")
 {% endcapture %}
 
 {% include nav-tabs.html macaulay2=macaulay2_code matlab=matlab_code julia=julia_code %}
@@ -238,7 +258,7 @@ TODO
 
 {% include nav-tabs.html macaulay2=macaulay2_code matlab=matlab_code julia=julia_code %}
 
-# Example 3: Global polynomial optimization
+### Example 3: Global polynomial optimization
 
 Consider the polynomial
 $f = x^4+x^2-3 x^2 z^2+z^6$.
@@ -269,13 +289,22 @@ prog = sossolve(prog);
 
 <!-- +++++++++++++++ JULIA +++++++++++++++ -->
 {% capture julia_code %}
-TODO
+m = SOSModel(solver = MosekSolver())
 
+@polyvar x z
+@variable(m, t)
+
+f = x^4+x^2-3*x^2*z^2+z^6 - t
+
+@constraint m f >= 0
+@objective m Max t
+solve(m)
+println("Solution: $(getvalue(t))")
 {% endcapture %}
 
 {% include nav-tabs.html macaulay2=macaulay2_code matlab=matlab_code julia=julia_code %}
 
-Alternatively, all tools have a simplified way for finding this lower bound.
+Alternatively, some tools have a simplified way for finding this lower bound.
 
 <!-- +++++++++++++ MACAULAY2 +++++++++++++ -->
 {% capture macaulay2_code %}
@@ -297,13 +326,12 @@ f = x^4+x^2-3*x^2*z^2+z^6
 
 <!-- +++++++++++++++ JULIA +++++++++++++++ -->
 {% capture julia_code %}
-TODO
-
+# Not available in SumOfSquares.jl
 {% endcapture %}
 
 {% include nav-tabs.html macaulay2=macaulay2_code matlab=matlab_code julia=julia_code %}
 
-# Example 4: Constrained polynomial optimization
+### Example 4: Constrained polynomial optimization
 
 Consider minimizing a polynomial $f(x)$ subject to equations $h_i(x)=0$ and inequalities $g_j(x)\geq 0$.
 Given a degree bound-$2d$, we can find a lower bound based on SOS.
