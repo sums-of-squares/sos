@@ -94,8 +94,18 @@ p = 2*x^4 + 2*x^3*y - x^2*y^2 + 5*y^4;
 
 <!-- +++++++++++++++ JULIA +++++++++++++++ -->
 {% capture julia_code %}
-TODO
+# Create symbolic variables
+@polyvar x y
+p = 2*x^4 + 2*x^3*y - x^2*y^2 + 5*y^4
 
+# Using the Mosek solver
+m = SOSModel(solver = MosekSolver())
+
+# We want constraint `p` to be a sum of squares
+@constraint m p >= 0
+
+# Solution status is `OPTIMAL` which means `p` is a sum of squares
+solve(m)
 {% endcapture %}
 
 {% include nav-tabs.html macaulay2=macaulay2_code matlab=matlab_code julia=julia_code %}
@@ -122,8 +132,13 @@ p = x^4*y^2 + x^2*y^4 - 3*x^2*y^2 + 1
 
 <!-- +++++++++++++++ JULIA +++++++++++++++ -->
 {% capture julia_code %}
-TODO
+@polyvar x y
+p = x^4*y^2 + x^2*y^4 - 3*x^2*y^2 + 1
+m = SOSModel(solver = MosekSolver())
+@constraint m p >= 0
 
+# Solution status is `Infeasible`
+solve(m)
 {% endcapture %}
 
 {% include nav-tabs.html macaulay2=macaulay2_code matlab=matlab_code julia=julia_code %}
@@ -225,7 +240,7 @@ TODO
 
 # Example 3: Global polynomial optimization
 
-Consider the polynomial 
+Consider the polynomial
 $f = x^4+x^2-3 x^2 z^2+z^6$.
 We may find a lower bound on $p$ by looking for the largest value of $t$ that makes $f - t$ is a sum-of-squares.
 This can be is a parametric SOS problem
@@ -295,7 +310,7 @@ Given a degree bound-$2d$, we can find a lower bound based on SOS.
 The next example has only equalities constraints:
 $$
     \min_{x,y} \quad x-y
-    \quad\text{ s.t. }\quad 
+    \quad\text{ s.t. }\quad
     x^2 - x = y^2 - y = 0.
 $$
 
@@ -332,7 +347,7 @@ TODO
 Now consider a problem with equalities and  inequalities:
 $$
     \min_{x,y} \quad x+y
-    \quad\text{ s.t. }\quad 
+    \quad\text{ s.t. }\quad
     x^2 + y^2 = 1, \;
     y - x^2 = 0.5, \;
     x \geq 0, \;
