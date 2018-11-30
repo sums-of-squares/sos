@@ -10,14 +10,14 @@ In this guide we explain how to perform basic SOS computations using the followi
 - [SOS.m2](https://github.com/parrilo/SOSm2): Macaulay2
 - [SumOfSquares.jl](https://github.com/JuliaOpt/SumOfSquares.jl): Julia
 
-We point out that other SOS tools are available, such as the Matlab libraries
+We point out that other SOS tools are available, mainly in Matlab, such as 
 [YALMIP](https://yalmip.github.io/tutorial/sumofsquaresprogramming/)
 and
 [GloptiPoly](http://homepages.laas.fr/henrion/software/gloptipoly/).
 
 # Installation and configuration
 
-To install the tools, type the following commands.
+For installation, type the following commands.
 
 <!-- +++++++++++++ MACAULAY2 +++++++++++++ -->
 {% capture macaulay2_code %}
@@ -179,16 +179,16 @@ TODO
 {% include nav-tabs.html macaulay2=macaulay2_code matlab=matlab_code julia=julia_code %}
 
 We now do parameter optimization.
-Among the values of $s,t$ that make the polynomial a sum-of-squares, we look for those with the minimum value of $t$.
+Among the values of $s,t$ that make the polynomial a sum-of-squares, we look for those with the minimum value of $s+t$.
 
 <!-- +++++++++++++ MACAULAY2 +++++++++++++ -->
 {% capture macaulay2_code %}
 R = QQ[x,y][s,t]
 p = s*x^6+t*y^6-x^4*y^2-x^2*y^4-x^4+3*x^2*y^2-y^4-x^2-y^2+1
-sol = solveSOS(p,t)
+sol = solveSOS(p,s+t)
 sol#Parameters
 
--- returns s = 1599609/256, t = 1
+-- returns s = t = 645962169/536870912 ~ 1.203
 {% endcapture %}
 
 <!-- ++++++++++++++ MATLAB +++++++++++++++ -->
