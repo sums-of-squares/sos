@@ -28,8 +28,7 @@ installPackage "SOS"
 
 <!-- ++++++++++++++ MATLAB +++++++++++++++ -->
 {% capture matlab_code %}
--- Make sure SOSTOOLS package is listed under "Set Path"
-
+% Make sure SOSTOOLS package is listed under "Set Path"
 {% endcapture %}
 
 <!-- +++++++++++++++ JULIA +++++++++++++++ -->
@@ -372,8 +371,17 @@ h = [x^2 - x, y^2 - y];
 
 <!-- +++++++++++++++ JULIA +++++++++++++++ -->
 {% capture julia_code %}
-TODO
+m = SOSModel(solver = MosekSolver())
 
+@polyvar x y
+@variable(m, t)
+# We need to convert each equality to two inequalities
+# to avoid numerical issues...
+S = @set x^2 >= x && y^2 >= y && x^2 <= x && y^2 <= y
+@constraint(m, x - y >= t, domain = S)
+@objective m Max t
+solve(m)
+println("Solution: $(getvalue(t))")
 {% endcapture %}
 
 {% include nav-tabs.html macaulay2=macaulay2_code matlab=matlab_code julia=julia_code %}
@@ -388,6 +396,11 @@ $$
     x \geq 0, \;
     y \geq 0.5.
 $$
+
+When solving constrained optimization problems, one usually also have to specify
+a degree bound to indicate the level of the sum-of-squares hierarchy to use. The
+higher the degree the better the relaxation, but it comes at a cost of
+increased computation time.
 
 <!-- +++++++++++++ MACAULAY2 +++++++++++++ -->
 {% capture macaulay2_code %}
@@ -408,8 +421,17 @@ h = [x^2+y^2-1, y-x^2-0.5];
 
 <!-- +++++++++++++++ JULIA +++++++++++++++ -->
 {% capture julia_code %}
-TODO
+m = SOSModel(solver = MosekSolver())
 
+@polyvar x y
+@variable(m, t)
+
+S = @set x^2 + y^2 == 1 && y - x^2 == 0.5 && x >=0 && y>=0.5
+
+@constraint(m, x + y >= t, domain = S, maxdegree = 2)
+@objective m Max t
+solve(m)
+println("Solution: $(getvalue(t))")
 {% endcapture %}
 
 {% include nav-tabs.html macaulay2=macaulay2_code matlab=matlab_code julia=julia_code %}
