@@ -94,8 +94,8 @@ sosPoly solveSOS p
 {% capture matlab_code %}
 syms x y;
 p = 2*x^4 + 2*x^3*y - x^2*y^2 + 5*y^4;
-[Q,Z] = findsos(p, options);
-% Program is feasible, thus p(x,y) is an SOS.
+[Q, Z] = findsos(p, options)
+% Returns matrices Q and Z so that Z.'*Q*Z = p
 {% endcapture %}
 
 <!-- +++++++++++++++ JULIA +++++++++++++++ -->
