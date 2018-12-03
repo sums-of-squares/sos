@@ -16,6 +16,8 @@ We point out that other SOS tools are available, mainly in MATLAB, such as
 and
 [GloptiPoly](http://homepages.laas.fr/henrion/software/gloptipoly/).
 
+### Backend SDP Solvers
+
 ### Installation and configuration
 
 For installation, type the following commands.
@@ -29,6 +31,7 @@ installPackage "SOS"
 <!-- ++++++++++++++ MATLAB +++++++++++++++ -->
 {% capture matlab_code %}
 % Make sure SOSTOOLS package is listed under "Set Path"
+% The following code has been tested with SOSTOOLS release v3.03
 {% endcapture %}
 
 <!-- +++++++++++++++ JULIA +++++++++++++++ -->
@@ -38,7 +41,6 @@ installPackage "SOS"
 ] add PolyJuMP
 ] add SumOfSquares
 ] add DynamicPolynomials
-] add Mosek
 ] add Mosek
 ] add SemialgebraicSets
 {% endcapture %}
@@ -50,14 +52,12 @@ Once installed, the following lines must be entered at the beginning of each ses
 <!-- +++++++++++++ MACAULAY2 +++++++++++++ -->
 {% capture macaulay2_code %}
 needsPackage "SOS"
-
 {% endcapture %}
 
 <!-- ++++++++++++++ MATLAB +++++++++++++++ -->
 {% capture matlab_code %}
-% add the SOSTOOLS to the matlab path
-addpath(genpath('/somepath/SOSTOOLS/'))
-
+% Set backend solver, in this case CSDP
+options.solver='csdp';
 {% endcapture %}
 
 <!-- +++++++++++++++ JULIA +++++++++++++++ -->
@@ -68,7 +68,10 @@ using PolyJuMP
 using SumOfSquares
 using DynamicPolynomials
 using Mosek
-using SemialgebraicSets
+using SemialgebraicSetst
+
+# Using Mosek as the SDP solver
+model = SOSModel(solver = MosekSolver())
 {% endcapture %}
 
 {% include nav-tabs.html macaulay2=macaulay2_code matlab=matlab_code julia=julia_code %}
@@ -83,7 +86,6 @@ $p(x) = 2 x^4 + 2 x^3 y - x^2 y^2 + 5 y^4$.
 R = QQ[x,y];
 p = 2*x^4 + 2*x^3*y - x^2*y^2 + 5*y^4;
 sosPoly solveSOS p
-
 -- returns the rational SOS decomposition
 -- p = 5 (-(11/25)*x^2+y^2)^2 +  17/5*(5/17*x^2+x*y)^2 + 1568/2125 * x^4
 {% endcapture %}
@@ -92,7 +94,7 @@ sosPoly solveSOS p
 {% capture matlab_code %}
 syms x y;
 p = 2*x^4 + 2*x^3*y - x^2*y^2 + 5*y^4;
-[Q,Z] = findsos(p);
+[Q,Z] = findsos(p, options);
 % Program is feasible, thus p(x,y) is an SOS.
 {% endcapture %}
 
@@ -102,14 +104,11 @@ p = 2*x^4 + 2*x^3*y - x^2*y^2 + 5*y^4;
 @polyvar x y
 p = 2*x^4 + 2*x^3*y - x^2*y^2 + 5*y^4
 
-# Using the Mosek solver
-m = SOSModel(solver = MosekSolver())
-
 # We want constraint `p` to be a sum of squares
-@constraint m p >= 0
+@constraint model p >= 0
 
 # Solution status is `OPTIMAL` which means `p` is a sum of squares
-solve(m)
+solve(model)
 {% endcapture %}
 
 {% include nav-tabs.html macaulay2=macaulay2_code matlab=matlab_code julia=julia_code %}
@@ -122,7 +121,6 @@ We next consider the Motzkin polynomial, $p(x) = x^4 y^2 + x^2 y^4 - 3 x^2 y^2 +
 R = QQ[x,y]
 p = x^4*y^2 + x^2*y^4 - 3*x^2*y^2 + 1
 sosPoly solveSOS p
-
 -- returns the message "dual infeasible"
 {% endcapture %}
 
@@ -130,20 +128,17 @@ sosPoly solveSOS p
 {% capture matlab_code %}
 syms x y;
 p = x^4*y^2 + x^2*y^4 - 3*x^2*y^2 + 1
-[Q,Z] = findsos(p);
-
-% Program is infeasible.
+[Q,Z] = findsos(p, options);
+% Program is infeasible, no sum-of-squares solution found
 {% endcapture %}
 
 <!-- +++++++++++++++ JULIA +++++++++++++++ -->
 {% capture julia_code %}
 @polyvar x y
 p = x^4*y^2 + x^2*y^4 - 3*x^2*y^2 + 1
-m = SOSModel(solver = MosekSolver())
-@constraint m p >= 0
-
+@constraint(model, p >= 0)
+solve(model)
 # Solution status is `Infeasible`
-solve(m)
 {% endcapture %}
 
 {% include nav-tabs.html macaulay2=macaulay2_code matlab=matlab_code julia=julia_code %}
@@ -158,39 +153,34 @@ $$ p(x) = s x^6+t y^6-x^4 y^2-x^2 y^4-x^4+3 x^2 y^2-y^4-x^2-y^2+1 $$
 <!-- +++++++++++++ MACAULAY2 +++++++++++++ -->
 {% capture macaulay2_code %}
 R = QQ[x,y][s,t]
-p = s*x^6+t*y^6-x^4*y^2-x^2*y^4-x^4+3*x^2*y^2-y^4-x^2-y^2+1
+p = s*x^6 + t*y^6 - x^4*y^2 - x^2*y^4 - x^4 + 3*x^2*y^2 - y^4 - x^2 - y^2 + 1
 sol = solveSOS p
 sol#Parameters
-
 -- returns s = t = 135/4
 {% endcapture %}
 
 <!-- ++++++++++++++ MATLAB +++++++++++++++ -->
 {% capture matlab_code %}
 syms x y s t;
-vartable = [x, y];
-prog = sosprogram(vartable);
-p = s*x^6+t*y^6-x^4*y^2-x^2*y^4-x^4+3*x^2*y^2-y^4-x^2-y^2+1
-prog = sosineq(prog,p);  % p(x,y)>=0
-prog = sossolve(prog);
+p = s*x^6 + t*y^6 - x^4*y^2 - x^2*y^4 - x^4 + 3*x^2*y^2 - y^4 - x^2 - y^2 + 1
 
-% Returns the values ???
+prog = sosprogram([x;y], [s;t]);
+prog = sosineq(prog, p); % p is sos
+prog = sossolve(prog, options);
+sosgetsol(prog, [s,t])
 {% endcapture %}
 
 <!-- +++++++++++++++ JULIA +++++++++++++++ -->
 {% capture julia_code %}
-m = SOSModel(solver = MosekSolver())
-
 @polyvar x y
-@variable(m, s)
-@variable(m, t)
+@variable(model, s)
+@variable(model, t)
 
-p = s*x^6+t*y^6-x^4*y^2-x^2*y^4-x^4+3*x^2*y^2-y^4-x^2-y^2+1
+p = s*x^6 + t*y^6 - x^4*y^2 - x^2*y^4 - x^4 + 3*x^2*y^2 - y^4 - x^2 - y^2 + 1
 
-@constraint m p >= 0
-solve(m)
+@constraint(model, p >= 0)
+solve(model)
 println("Solution: [ $(getvalue(s)), $(getvalue(t)) ]")
-
 {% endcapture %}
 
 {% include nav-tabs.html macaulay2=macaulay2_code matlab=matlab_code julia=julia_code %}
@@ -202,39 +192,36 @@ minimum value of $s+t$.
 <!-- +++++++++++++ MACAULAY2 +++++++++++++ -->
 {% capture macaulay2_code %}
 R = QQ[x,y][s,t]
-p = s*x^6+t*y^6-x^4*y^2-x^2*y^4-x^4+3*x^2*y^2-y^4-x^2-y^2+1
+p = s*x^6 + t*y^6 - x^4*y^2 - x^2*y^4 - x^4 + 3*x^2*y^2 - y^4 - x^2 - y^2 + 1
 sol = solveSOS(p,s+t)
 sol#Parameters
-
 -- returns s = t = 645962169/536870912 ~ 1.203
 {% endcapture %}
 
 <!-- ++++++++++++++ MATLAB +++++++++++++++ -->
 {% capture matlab_code %}
 syms x y s t;
-vartable = [x, y];
-prog = sosprogram(vartable);
-p = s*x^6+t*y^6-x^4*y^2-x^2*y^4-x^4+3*x^2*y^2-y^4-x^2-y^2+1
-prog = sosineq(prog,p); % p>=0
-prog = sossolve(prog);
+p = s*x^6 + t*y^6 - x^4*y^2 - x^2*y^4 - x^4 + 3*x^2*y^2 - y^4 - x^2 - y^2 + 1
 
-% Returns the values ???
+prog = sosprogram([x;y], [s;t]);
+prog = sosineq(prog, p);     % p is sos
+prog = sossetobj(prog, s+t); % minimizes s+t
+prog = sossolve(prog, options);
+sosgetsol(prog, [s,t])
+% returns s ~ 1.203, t ~ 1.203
 {% endcapture %}
 
 <!-- +++++++++++++++ JULIA +++++++++++++++ -->
 {% capture julia_code %}
-m = SOSModel(solver = MosekSolver())
-
 @polyvar x y
-@variable(m, s)
-@variable(m, t)
-
+@variable(model, s)
+@variable(model, t)
 p = s*x^6+t*y^6-x^4*y^2-x^2*y^4-x^4+3*x^2*y^2-y^4-x^2-y^2+1
-
-@constraint m p >= 0
-@objective m Min s+t
-solve(m)
+@constraint(model, p >= 0)
+@objective(model, Min, s+t)
+solve(model)
 println("Solution: [ $(getvalue(s)), $(getvalue(t)) ]")
+# returns s ~ 1.203, t ~ 1.203
 {% endcapture %}
 
 {% include nav-tabs.html macaulay2=macaulay2_code matlab=matlab_code julia=julia_code %}
@@ -249,12 +236,10 @@ This is not yet possible in Macaulay2.
 <!-- ++++++++++++++ MATLAB +++++++++++++++ -->
 {% capture matlab_code %}
 syms x y s t;
-vartable = [x, y];
-prog = sosprogram(vartable);
+prog = sosprogram([x;y], [s;t]);
 p = x^4*y^2 + x^2*y^4 - 3*x^2*y^2 + 1
-prog = sosineq(prog,p); % p>=0
-prog = sossolve(prog);
-
+prog = sosineq(prog, p);
+prog = sossolve(prog, options);
 % Returns the values ???
 {% endcapture %}
 
@@ -276,38 +261,35 @@ section.
 <!-- +++++++++++++ MACAULAY2 +++++++++++++ -->
 {% capture macaulay2_code %}
 R = QQ[x,z][t];
-p = x^4+x^2-3*x^2*z^2+z^6
+p = x^4 + x^2 - 3*x^2*z^2 + z^6
 sol = solveSOS (p-t, -t, RoundTol=>12);
 sol#Parameters
-
 -- returns the rational lower bound -729/4096
 {% endcapture %}
 
 <!-- ++++++++++++++ MATLAB +++++++++++++++ -->
 {% capture matlab_code %}
 syms x z t;
-vartable = [x, z];
-prog = sosprogram(vartable);
-p = x^4+x^2-3*x^2*z^2+z^6
-prog = sosineq(prog,p-t); % p-t>=0
-prog = sossolve(prog);
+p = x^4 + x^2 - 3*x^2*z^2 + z^6
 
+prog = sosprogram([x;z], [t]);
+prog = sosineq(prog, p-t);  % p - t is sos
+prog = sossetobj(prog, -t); % maximizes t
+prog = sossolve(prog, options);
+sosgetsol(prog, t)
 % Returns the lower bound -.177979
 {% endcapture %}
 
 <!-- +++++++++++++++ JULIA +++++++++++++++ -->
 {% capture julia_code %}
-m = SOSModel(solver = MosekSolver())
-
 @polyvar x z
-@variable(m, t)
-
-p = x^4+x^2-3*x^2*z^2+z^6 - t
-
-@constraint m p >= 0
-@objective m Max t
-solve(m)
+@variable(model, t)
+p = x^4 + x^2 - 3*x^2*z^2 + z^6 - t
+@constraint(model, p >= 0)
+@objective(model, Max, t)
+solve(model)
 println("Solution: $(getvalue(t))")
+% Returns the lower bound -.17700
 {% endcapture %}
 
 {% include nav-tabs.html macaulay2=macaulay2_code matlab=matlab_code julia=julia_code %}
@@ -319,7 +301,6 @@ Alternatively, some tools have a simplified way for finding this lower bound.
 R = QQ[x,z];
 p = x^4+x^2-3*x^2*z^2+z^6
 (t,sol) = lowerBound (p, RoundTol=>12);
-
 -- returns t = -729/4096
 {% endcapture %}
 
@@ -327,8 +308,7 @@ p = x^4+x^2-3*x^2*z^2+z^6
 {% capture matlab_code %}
 syms x z;
 p = x^4+x^2-3*x^2*z^2+z^6
-[t,vars,xopt] = findbound(p)
-
+[t,vars,xopt] = findbound(p, options)
 % Returns t = -.177979
 {% endcapture %}
 
@@ -354,7 +334,6 @@ d = 1;
 f = x - y;
 h = matrix{{x^2 - x, y^2 - y}};
 (t,sol,mult) = lowerBound (f, h, 2*d);
-
 -- returns t = -1
 {% endcapture %}
 
@@ -362,26 +341,25 @@ h = matrix{{x^2 - x, y^2 - y}};
 {% capture matlab_code %}
 syms x y;
 d = 1;
-f = x - y;
-h = [x^2 - x, y^2 - y];
-[t,vars,xopt] = findbound(f, [], h, 2*d)
-
+obj = x - y;
+ineqs = [];
+eqs = [x^2 - x, y^2 - y];
+[t,vars,xopt] = findbound(obj, ineqs, eqs, 2*d, options)
 % Returns t = -1
 {% endcapture %}
 
 <!-- +++++++++++++++ JULIA +++++++++++++++ -->
 {% capture julia_code %}
-m = SOSModel(solver = MosekSolver())
-
 @polyvar x y
-@variable(m, t)
+@variable(model, t)
 # We need to convert each equality to two inequalities
 # to avoid numerical issues...
 S = @set x^2 >= x && y^2 >= y && x^2 <= x && y^2 <= y
-@constraint(m, x - y >= t, domain = S)
-@objective m Max t
-solve(m)
+@constraint(model, x - y >= t, domain = S)
+@objective(model, Max, t)
+solve(model)
 println("Solution: $(getvalue(t))")
+# Returns t = -1
 {% endcapture %}
 
 {% include nav-tabs.html macaulay2=macaulay2_code matlab=matlab_code julia=julia_code %}
@@ -411,27 +389,23 @@ This is not yet possible in Macaulay2.
 {% capture matlab_code %}
 syms x y;
 d = 2;
-f = x+y;
-g = [x, y-0.5];
-h = [x^2+y^2-1, y-x^2-0.5];
-[t,vars,opt] = findbound(f,g,h,2*d);
-
-% Returns t = 1.3911
+obj = x + y;
+ineqs = [x, y - 0.5];
+eqs = [x^2 + y^2 - 1, y - x^2 - 0.5];
+[t,vars,xopt] = findbound(obj, ineqs, eqs, 2*d, options)
+% Returns t ~ 1.3911
 {% endcapture %}
 
 <!-- +++++++++++++++ JULIA +++++++++++++++ -->
 {% capture julia_code %}
-m = SOSModel(solver = MosekSolver())
-
 @polyvar x y
-@variable(m, t)
-
+@variable(model, t)
 S = @set x^2 + y^2 == 1 && y - x^2 == 0.5 && x >=0 && y>=0.5
-
-@constraint(m, x + y >= t, domain = S, maxdegree = 2)
-@objective m Max t
-solve(m)
+@constraint(model, x + y >= t, domain = S, maxdegree = 2)
+@objective(model, Max, t)
+solve(model)
 println("Solution: $(getvalue(t))")
+# Returns t ~ 1.3911
 {% endcapture %}
 
 {% include nav-tabs.html macaulay2=macaulay2_code matlab=matlab_code julia=julia_code %}
