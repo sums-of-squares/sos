@@ -151,7 +151,9 @@ $$
   equal to the degree of the Hilbert function of $\mathbb{R}[x]/I$. 
 
 
-Now let $G =(V,E)$ be the Petersen graph, shown in the figure.
+Now let $G =(V,E)$ be the Petersen graph, shown below.
+
+![Petersen](assets/images/Petersen.png){:height="200px"}.
 
 1. Find a stable set in the Petersen graph of maximum cardinality.
 
