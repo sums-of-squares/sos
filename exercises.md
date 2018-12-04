@@ -4,7 +4,7 @@ layout: default
 
 Text can be **bold**, _italic_, or ~~strikethrough~~.
 
-[Link to another page](./another-page.html).
+[Back to the main page](./index.html).
 
 There should be whitespace between paragraphs.
 
@@ -13,12 +13,10 @@ There should be whitespace between paragraphs. We recommend including a README, 
 Math example:
 $$ r = h = \sqrt{\frac {1} {2}} = \sqrt{\frac {N} {N+1}} \sqrt{\frac {N+1} {2N}} $$
 
-Diego's first commit
-
 
 * * *
 
-Stuff below is new, keep!
+PP: Stuff below is new, keep!
 
 I'll edit the rest later.
 
@@ -211,6 +209,14 @@ is a positive map, but is not decomposable.
 \Lambda(x x^T) y$. How can you express positivity and decomposability
 of the linear map $\Lambda$ in terms of the polynomial $p$?
 
+
+
+
+* * *
+
+End of exercises
+
+* * *
 
 
 
