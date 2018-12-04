@@ -7,7 +7,7 @@ layout: default
 In this guide we explain how to perform basic SOS computations using the
 following tools implemented in a variety of languages:
 
-- Macaulay2: [SOS.m2](https://github.com/parrilo/SOSm2)
+- Macaulay2: [SOS.m2](https://github.com/diegcif/SOSm2)
 - MATLAB: [SOSTOOLS](https://www.cds.caltech.edu/sostools/)
 - Julia: [SumOfSquares.jl](https://github.com/JuliaOpt/SumOfSquares.jl)
 
