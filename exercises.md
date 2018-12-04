@@ -2,12 +2,13 @@
 layout: default
 ---
 
-[Back to the main page](./index.html).
-
 * * *
 
-![SexticForm](assets/images/SexticFormSmall.jpg){: .align-right width="200px"}
+![SexticForm](assets/images/SexticFormSmall.jpg){: .align-left width="150px"}
 Here is a list of exercises to be used during the AMS Short Course.
+
+
+[Back to the main page](./index.html).
 
 * * *
 
