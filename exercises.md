@@ -4,9 +4,9 @@ layout: default
 
 * * *
 
-![SexticForm](assets/images/SexticFormSmall.jpg){: .align-left width="150px"}
-Here is a list of exercises to be used during the AMS Short Course.
+<img align="right" src="assets/images/SexticFormSmall.jpg">
 
+Here is a list of exercises to be used during the AMS Short Course.
 
 [Back to the main page](./index.html).
 
