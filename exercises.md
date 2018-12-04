@@ -79,9 +79,9 @@ Consider the polynomial system $\{ x+y^3 =2, x^2+y^2=1\}$.
 
 Consider the butterfly curve in $\mathbb{R}^2$, defined by the equation
 
-\[
+$$
 x^6 + y^6 = x^2.
-\]
+$$
 
 Give an sos certificate that the real locus of this curve is contained
 in a disk of radius $5/4$. Is this the best possible constant?
@@ -91,9 +91,9 @@ in a disk of radius $5/4$. Is this the best possible constant?
 
 Consider the quartic form in four variables 
 
-\[
+$$
 p(w,x,y,z) := w^4 + x^2y^2 + x^2z^2 + y^2z^2 - 4wxyz.
-\]
+$$
 
 1. Show that $p(w, x, y, z)$ is not a sum of squares.
 2. Find a multiplier $q(w,x,y,z)$ such that $q(w,x,y,z) p(w,x,y,z)$ is a sum of squares.
@@ -108,14 +108,14 @@ $P(X \in S)$. We assume $S$ and $\Omega$ are given intervals.
 Consider the following optimization problem in the decision variables
 $c_k$:
 
-\[
+$$
 \text{minimize} \sum_{k=0}^d c_k \mu_k \qquad
 \mbox{s.t.} \quad 
 \begin{cases}
 \sum_{k=0}^d c_k x^k \geq 1 & \forall x \in S \\
 \sum_{k=0}^d c_k x^k \geq 0 & \forall x \in \Omega.
 \end{cases}
-\]
+$$
 
 1. Show that any feasible solution of this problem gives a valid upper
 bound on $P(X \in S)$. How would you solve this problem?
@@ -138,9 +138,9 @@ The _stability number_ $\alpha(G)$ of a graph $G$ is the
 
 1. Show that $\alpha(G)$ is \emph{exactly} given by 
 
-\[
+$$
 \min \gamma \qquad  \gamma - \sum_{i \in V} x_i  \quad \text{is SOS mod $I$}. 
-\]
+$$
 
 [**Hint:** recall (or prove!) that if $I$ is
   zero-dimensional and radical, then $p(x) \geq 0$ on $V(I)$ if and
@@ -150,9 +150,9 @@ The _stability number_ $\alpha(G)$ of a graph $G$ is the
   of squares of affine (degree 1) polynomials. Show that an upper
   bound on $\alpha(G)$ can be obtained by solving
 
-\[
+$$
 \min \gamma \qquad  \gamma - \sum_{i \in V} x_i  \quad \text{is 1-SOS mod $I$}. 
-\]
+$$
 
 3. Show that the given generators of the ideal $I$ are already a
   Gröbner basis. Show that there is a natural bijection between
@@ -191,14 +191,14 @@ are known as _decomposable_ maps.
 2. Show that the linear map $C:\mathcal{S}^3 \rightarrow
 \mathcal{S}^3$ (due to M.-D. Choi) given by:
 
-\[
+$$
 C:A \mapsto 
 \begin{bmatrix}
 2 a_{11} + a_{22} &          0       &     0       \\
          0       & 2 a_{22} + a_{33} &    0  \\
         0        &           0      & 2 a_{33} + a_{11} 
 \end{bmatrix} - A.
-\]
+$$
 
 is a positive map, but is not decomposable.
 
