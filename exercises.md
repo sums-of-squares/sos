@@ -72,17 +72,19 @@ fixed degree $d$ on the interval $[-2,2]$.
 
 Consider the polynomial system $\{ x+y^3 =2, x^2+y^2=1\}$. 
 
-1. Is it feasible over $\C$? How many solutions are there?
-2. Is it feasible over $\R$? If not, give a Positivstellensatz-based infeasibility certificate of this fact.
+1. Is it feasible over $\mathbb{C}$? How many solutions are there?
+2. Is it feasible over $\mathbb{R}$? If not, give a Positivstellensatz-based infeasibility certificate of this fact.
 
 
 
 ## Exercise 7
 
-Consider the butterfly curve in $\R^2$, defined by the equation
+Consider the butterfly curve in $\mathbb{R}^2$, defined by the equation
+
 \[
 x^6 + y^6 = x^2.
 \]
+
 Give an sos certificate that the real locus of this curve is contained
 in a disk of radius $5/4$. Is this the best possible constant?
 
@@ -90,6 +92,7 @@ in a disk of radius $5/4$. Is this the best possible constant?
 ## Exercise 8
 
 Consider the quartic form in four variables 
+
 \[
 p(w,x,y,z) := w^4 + x^2y^2 + x^2z^2 + y^2z^2 - 4wxyz.
 \]
@@ -108,7 +111,7 @@ Consider the following optimization problem in the decision variables
 $c_k$:
 
 \[
-\min \sum_{k=0}^d c_k \mu_k \qquad
+\text{minimize} \sum_{k=0}^d c_k \mu_k \qquad
 \mbox{s.t.} \quad 
 \begin{cases}
 \sum_{k=0}^d c_k x^k \geq 1 & \forall x \in S \\
@@ -116,8 +119,8 @@ $c_k$:
 \end{cases}
 \]
 
-1. Show that any feasible solution of~(\ref{eq:sdpbound}) gives a
-valid upper bound on $P(X \in S)$. How would you solve this problem?
+1. Show that any feasible solution of this problem gives a valid upper
+bound on $P(X \in S)$. How would you solve this problem?
 
 2. Assume that $\Omega = [0,5]$, $S = [4,5]$, and we know that the
 mean and variance of $X$ are equal to $1$ and $1/2$,
@@ -136,6 +139,7 @@ The _stability number_ $\alpha(G)$ of a graph $G$ is the
 
 
 1. Show that $\alpha(G)$ is \emph{exactly} given by 
+
 \[
 \min \gamma \qquad  \gamma - \sum_{i \in V} x_i  \quad \text{is SOS mod $I$}. 
 \]
@@ -147,24 +151,25 @@ The _stability number_ $\alpha(G)$ of a graph $G$ is the
 2. Recall that a polynomial is 1-SOS if it can be written as a sum
   of squares of affine (degree 1) polynomials. Show that an upper
   bound on $\alpha(G)$ can be obtained by solving
+
 \[
 \min \gamma \qquad  \gamma - \sum_{i \in V} x_i  \quad \text{is 1-SOS mod $I$}. 
 \]
 
 3. Show that the given generators of the ideal $I$ are already a
-  Gr\"obner basis. Show that there is a natural bijection between
-  standard monomials and stable sets of~$G$.
+  Gröbner basis. Show that there is a natural bijection between
+  standard monomials and stable sets of $G$.
 
 4. As a consequence of the previous fact, show that $\alpha(G)$ is
-  equal to the degree of the Hilbert function of $\R[x]/I$. 
+  equal to the degree of the Hilbert function of $\mathbb{R}[x]/I$. 
 
 
-Now let $G =(V,E)$ be the Petersen graph, shown in the figure..
+Now let $G =(V,E)$ be the Petersen graph, shown in the figure.
 
 1. Find a stable set in the Petersen graph of maximum cardinality.
 
-2. Solve problem~\eqref{eq:1sos} for the Petersen graph. What is
-  the corresponding upper bound?
+2. Solve this optimization problem for the Petersen graph. What is the
+  corresponding upper bound?
 
 3. Compute the Hilbert function of $I$ using Macaulay2, and verify
   that this answer is consistent with your previous results.
@@ -177,16 +182,17 @@ Now let $G =(V,E)$ be the Petersen graph, shown in the figure..
 
 Consider linear maps between symmetric matrices, i.e., of the
 form $\Lambda:\mathcal{S}^n \rightarrow \mathcal{S}^m$. A map is said
-to be a \emph{positive map} if it maps the PSD cone $S^n_+$ into the
+to be a _positive map_ if it maps the PSD cone $S^n_+$ into the
 PSD cone $S^m_+$ (i.e., it preserves positive semidefinite matrices).
 
 
 1. Show that any linear map of the form $A \mapsto \sum_i
 P_i^T A P_i$, where $P_i \in \R^{n \times m}$, is positive. These maps
-are known as \emph{decomposable} maps.
+are known as _decomposable_ maps.
 
 2. Show that the linear map $C:\mathcal{S}^3 \rightarrow
 \mathcal{S}^3$ (due to M.-D. Choi) given by:
+
 \[
 C:A \mapsto 
 \begin{bmatrix}
@@ -195,7 +201,10 @@ C:A \mapsto
         0        &           0      & 2 a_{33} + a_{11} 
 \end{bmatrix} - A.
 \]
+
 is a positive map, but is not decomposable.
+
+
 
 
 **Hint:** Consider the polynomial defined by $p(x,y) := y^T
