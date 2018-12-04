@@ -4,11 +4,15 @@ layout: default
 
 * * *
 
-<img align="right" src="assets/images/SexticFormSmall.jpg" height="100" alt="Sextic Form">
+<img align="right" src="assets/images/SexticFormSmall.jpg" height="150" alt="Sextic Form">
 
 Here is a list of exercises to be used during the AMS Short Course.
 
+&nbsp;
+
 [Back to the main page](./index.html).
+
+&nbsp;
 
 * * *
 
@@ -151,7 +155,11 @@ $$
   equal to the degree of the Hilbert function of $\mathbb{R}[x]/I$. 
 
 
-Now let $G =(V,E)$ be the Petersen graph, shown in the figure.
+Now let $G =(V,E)$ be the Petersen graph, shown below.
+
+<p align="center">
+  <img height="180" src="assets/images/Petersen.png">
+</p>
 
 1. Find a stable set in the Petersen graph of maximum cardinality.
 
