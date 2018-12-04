@@ -153,7 +153,16 @@ $$
 
 Now let $G =(V,E)$ be the Petersen graph, shown below.
 
-![Petersen](assets/images/Petersen.png){:height="200px"}.
+![Petersen](assets/images/Petersen.png){:height="200px" .align-center}.
+
+Blah
+
+<p align="center">
+  <img height="200" src="assets/images/Petersen.png">
+</p>
+
+Blah
+
 
 1. Find a stable set in the Petersen graph of maximum cardinality.
 
