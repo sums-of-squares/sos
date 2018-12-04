@@ -18,20 +18,30 @@ and
 
 ### Backend SDP Solvers
 
+SOS computations rely on semidefinite programming (SDP) solvers.
+The following solvers are available as of December 2018:
+
+- Macaulay2: CSDP (preinstalled), MOSEK, SDPA.
+- MATLAB: SeDuMi, SDPT3, CSDP, SDPNAL, CDCS and SDPA.
+- Julia: CSDP, MOSEK, SCS, SDPA.
+
 ### Installation and configuration
 
 For installation, type the following commands.
 
 <!-- +++++++++++++ MACAULAY2 +++++++++++++ -->
 {% capture macaulay2_code %}
+installPackage "SemidefiniteProgramming"
 installPackage "SOS"
 
 {% endcapture %}
 
 <!-- ++++++++++++++ MATLAB +++++++++++++++ -->
 {% capture matlab_code %}
-% Make sure SOSTOOLS package is listed under "Set Path"
+% Download SOSTOOLS and save it in some directory.
 % The following code has been tested with SOSTOOLS release v3.03
+% Start MATLAB, go to this directory, and run the script:
+addsostools
 {% endcapture %}
 
 <!-- +++++++++++++++ JULIA +++++++++++++++ -->
@@ -51,11 +61,17 @@ Once installed, the following lines must be entered at the beginning of each ses
 
 <!-- +++++++++++++ MACAULAY2 +++++++++++++ -->
 {% capture macaulay2_code %}
-needsPackage "SOS"
+needsPackage( "SOS" ); 
+
+-- the default solver is CSDP
+-- it can be changed with the command
+changeSolver ("MOSEK", "/path/to/mosek")
 {% endcapture %}
 
 <!-- ++++++++++++++ MATLAB +++++++++++++++ -->
 {% capture matlab_code %}
+% Make sure SOSTOOLS package is listed under "Set Path"
+
 % Set backend solver, in this case CSDP
 options.solver='csdp';
 {% endcapture %}
