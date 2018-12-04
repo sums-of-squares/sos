@@ -4,11 +4,15 @@ layout: default
 
 * * *
 
-<img align="right" src="assets/images/SexticFormSmall.jpg" height="100" alt="Sextic Form">
+<img align="right" src="assets/images/SexticFormSmall.jpg" height="150" alt="Sextic Form">
 
 Here is a list of exercises to be used during the AMS Short Course.
 
+&nbsp;
+
 [Back to the main page](./index.html).
+
+&nbsp;
 
 * * *
 
@@ -153,16 +157,9 @@ $$
 
 Now let $G =(V,E)$ be the Petersen graph, shown below.
 
-![Petersen](assets/images/Petersen.png){:height="200px" .align-center}.
-
-Blah
-
 <p align="center">
-  <img height="200" src="assets/images/Petersen.png">
+  <img height="180" src="assets/images/Petersen.png">
 </p>
-
-Blah
-
 
 1. Find a stable set in the Petersen graph of maximum cardinality.
 
