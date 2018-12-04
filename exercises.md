@@ -2,23 +2,7 @@
 layout: default
 ---
 
-Text can be **bold**, _italic_, or ~~strikethrough~~.
-
 [Back to the main page](./index.html).
-
-There should be whitespace between paragraphs.
-
-There should be whitespace between paragraphs. We recommend including a README, or a file with information about your project.
-
-Math example:
-$$ r = h = \sqrt{\frac {1} {2}} = \sqrt{\frac {N} {N+1}} \sqrt{\frac {N+1} {2N}} $$
-
-
-* * *
-
-PP: Stuff below is new, keep!
-
-I'll edit the rest later.
 
 * * *
 
@@ -136,7 +120,7 @@ The _stability number_ $\alpha(G)$ of a graph $G$ is the
   \rangle$.
 
 
-1. Show that $\alpha(G)$ is \emph{exactly} given by 
+1. Show that $\alpha(G)$ is _exactly_ given by 
 
 $$
 \min \gamma \qquad  \gamma - \sum_{i \in V} x_i  \quad \text{is SOS mod $I$}. 
@@ -185,7 +169,7 @@ PSD cone $S^m_+$ (i.e., it preserves positive semidefinite matrices).
 
 
 1. Show that any linear map of the form $A \mapsto \sum_i
-P_i^T A P_i$, where $P_i \in \R^{n \times m}$, is positive. These maps
+P_i^T A P_i$, where $P_i \in \mathbb{R}^{n \times m}$, is positive. These maps
 are known as _decomposable_ maps.
 
 2. Show that the linear map $C:\mathcal{S}^3 \rightarrow
@@ -214,7 +198,9 @@ of the linear map $\Lambda$ in terms of the polynomial $p$?
 
 * * *
 
-End of exercises
+End of exercises.
+
+Stuff below will go away, but keeping it for now.
 
 * * *
 
