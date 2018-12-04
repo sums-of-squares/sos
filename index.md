@@ -79,7 +79,7 @@ model = SOSModel(solver = MosekSolver())
 ### Example 1: Checking if a polynomial is SOS
 
 Here we find an SOS decomposition for the polynomial
-$p(x) = 2 x^4 + 2 x^3 y - x^2 y^2 + 5 y^4$.
+$p = 2 x^4 + 2 x^3 y - x^2 y^2 + 5 y^4$.
 
 <!-- +++++++++++++ MACAULAY2 +++++++++++++ -->
 {% capture macaulay2_code %}
@@ -113,7 +113,7 @@ solve(model)
 
 {% include nav-tabs.html macaulay2=macaulay2_code matlab=matlab_code julia=julia_code %}
 
-We next consider the Motzkin polynomial, $p(x) = x^4 y^2 + x^2 y^4 - 3 x^2 y^2 +
+We next consider the Motzkin polynomial, $p = x^4 y^2 + x^2 y^4 - 3 x^2 y^2 +
 1$, which is nonnegative but no SOS decomposition exists.
 
 <!-- +++++++++++++ MACAULAY2 +++++++++++++ -->
@@ -148,7 +148,7 @@ solve(model)
 In the next example we consider the variables $s$, $t$ as parameters, and find
 values for them such that the following polynomial is a sum-of-squares.
 
-$$ p(x) = s x^6+t y^6-x^4 y^2-x^2 y^4-x^4+3 x^2 y^2-y^4-x^2-y^2+1 $$
+$$ p = s x^6+t y^6-x^4 y^2-x^2 y^4-x^4+3 x^2 y^2-y^4-x^2-y^2+1 $$
 
 <!-- +++++++++++++ MACAULAY2 +++++++++++++ -->
 {% capture macaulay2_code %}
@@ -226,7 +226,9 @@ println("Solution: [ $(getvalue(s)), $(getvalue(t)) ]")
 
 {% include nav-tabs.html macaulay2=macaulay2_code matlab=matlab_code julia=julia_code %}
 
-Finally, we consider a problem involving multiple SOS constraints.
+Finally, we consider a problem involving multiple SOS constraints. Suppose we
+want to find the smallest $t$ so that both $p_1 = t(1+xy)^2 - xy + (1-y)^2$ and
+$p_2 = (1-xy)^2+xy+t(1+y)^2$ are sums of squares.
 
 <!-- +++++++++++++ MACAULAY2 +++++++++++++ -->
 {% capture macaulay2_code %}
@@ -235,26 +237,39 @@ This is not yet possible in Macaulay2.
 
 <!-- ++++++++++++++ MATLAB +++++++++++++++ -->
 {% capture matlab_code %}
-syms x y s t;
-prog = sosprogram([x;y], [s;t]);
-p = x^4*y^2 + x^2*y^4 - 3*x^2*y^2 + 1
-prog = sosineq(prog, p);
+syms x y t;
+p1 = t*(1 + x*y)^2 - x*y + (1 - y)^2;
+p2 = (1 - x*y)^2 + x*y + t*(1 + y)^2;
+
+prog = sosprogram([x;y], [t]);
+prog = sosineq(prog, p1);   % p1 is sos
+prog = sosineq(prog, p2);   % p2 is sos
+prog = sossetobj(prog, t); % minimizes t
 prog = sossolve(prog, options);
-% Returns the values ???
+sosgetsol(prog, t)
+% returns t = 0.25
 {% endcapture %}
 
 <!-- +++++++++++++++ JULIA +++++++++++++++ -->
 {% capture julia_code %}
-TODO
-
+@polyvar x y
+@variable(model, t)
+p1 = t*(1 + x*y)^2 - x*y + (1 - y)^2
+p2 = (1 - x*y)^2 + x*y + t*(1 + y)^2
+@constraint(model, p1 >= 0)
+@constraint(model, p2 >= 0)
+@objective(model, Min, t)
+solve(model)
+println("Solution: $(getvalue(t))")
+# Returns t ~ 0.25
 {% endcapture %}
 
 {% include nav-tabs.html macaulay2=macaulay2_code matlab=matlab_code julia=julia_code %}
 
 ### Example 3: Global polynomial optimization
 
-Consider the polynomial $p(x) = x^4+x^2-3 x^2 z^2+z^6$.  We may find a lower
-bound on $p$ by looking for the largest value of $t$ so that $p(x) - t$ is a
+Consider the polynomial $p = x^4+x^2-3 x^2 z^2+z^6$.  We may find a lower
+bound on $p$ by looking for the largest value of $t$ so that $p - t$ is a
 sum-of-squares. This can be formulated using similar techniques as the previous
 section.
 
