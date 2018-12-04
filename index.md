@@ -21,9 +21,9 @@ and
 SOS computations rely on semidefinite programming (SDP) solvers.
 The following solvers are available as of December 2018:
 
-- Macaulay2: CSDP (preinstalled), MOSEK, SDPA.
-- MATLAB: SeDuMi, SDPT3, CSDP, SDPNAL, CDCS and SDPA.
-- Julia: CSDP, MOSEK, SCS, SDPA.
+- Macaulay2: [CSDP](https://github.com/coin-or/Csdp/wiki) (preinstalled), [MOSEK](https://www.mosek.com/), [SDPA](http://sdpa.sourceforge.net/).
+- MATLAB: [SeDuMi](http://sedumi.ie.lehigh.edu/), [MOSEK](https://www.mosek.com/), [SDPT3](http://www.math.nus.edu.sg/~mattohkc/SDPT3.html), [CSDP](https://github.com/coin-or/Csdp/wiki), [SDPNAL](http://www.math.nus.edu.sg/~mattohkc/SDPNALplus.html), [CDCS](https://github.com/oxfordcontrol/CDCS) and [SDPA](http://sdpa.sourceforge.net/).
+- Julia: [CSDP](https://github.com/coin-or/Csdp/wiki), [MOSEK](https://www.mosek.com/), [SCS](https://github.com/cvxgrp/scs), [SDPA](http://sdpa.sourceforge.net/).
 
 ### Installation and configuration
 
@@ -61,7 +61,7 @@ Once installed, the following lines must be entered at the beginning of each ses
 
 <!-- +++++++++++++ MACAULAY2 +++++++++++++ -->
 {% capture macaulay2_code %}
-needsPackage( "SOS" ); 
+needsPackage( "SOS" );
 
 -- the default solver is CSDP
 -- it can be changed with the command
