@@ -359,13 +359,16 @@ bound based on SOS.  The next example has only equality constraints:
 $$ \min_{x,y} \quad x-y \quad\text{ s.t. }\quad x^2 - x = y^2 - y = 0.$$
 
 <!-- +++++++++++++ MACAULAY2 +++++++++++++ -->
+<!-- using raw environment to escape double curly braces -->
 {% capture macaulay2_code %}
+{% raw %}
 R = QQ[x,y];
 d = 1;
 f = x - y;
 h = matrix{{x^2 - x, y^2 - y}};
 (t,sol,mult) = lowerBound (f, h, 2*d);
 -- returns t = -1
+{% endraw %}
 {% endcapture %}
 
 <!-- ++++++++++++++ MATLAB +++++++++++++++ -->
