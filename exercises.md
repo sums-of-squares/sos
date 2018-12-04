@@ -6,6 +6,11 @@ layout: default
 
 * * *
 
+Here is a list of exercises to be used during the AMS Short Course.
+
+![SexticForm](img/SexticFormSmall.jpg)
+
+* * *
 
 ## Exercise 1
 
