@@ -1,5 +1,5 @@
 markdown: kramdown
 highlighter: rouge
-theme: jekyll-theme-slate
+theme: jekyll-theme-architect
 title: Sum of Squares Computational Tools
 description: Documentation and examples on how to run Sum of Squares solvers
