@@ -4,9 +4,12 @@ layout: default
 
 * * *
 
+<a href="http://www.ams.org/meetings/short-courses/short-course-general">
 <img align="right" src="assets/images/SexticFormSmall.jpg" height="150" alt="Sextic Form">
+</a>
 
-Here is a list of exercises to be used during the AMS Short Course.
+Here is a list of exercises to be used during the
+[AMS Short Course "Sum of Squares: Theory and Applications"](http://www.ams.org/meetings/short-courses/short-course-general).
 
 &nbsp;
 

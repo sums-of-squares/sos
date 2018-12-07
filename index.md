@@ -2,30 +2,41 @@
 layout: default
 ---
 
-### Introduction
+## Introduction
 
-In this guide we explain how to perform basic SOS computations using the
-following tools implemented in a variety of languages:
+In this guide we explain how to perform basic sum of squares (SOS)
+computations. Depending on which mathematical computer
+language/environment you are most familiar with, you may use *either*
+of the following tools:
 
 - Macaulay2: [SOS.m2](https://github.com/diegcif/SOSm2)
 - MATLAB: [SOSTOOLS](https://www.cds.caltech.edu/sostools/)
 - Julia: [SumOfSquares.jl](https://github.com/JuliaOpt/SumOfSquares.jl)
 
-We point out that other SOS tools are available, mainly in MATLAB, such as
+At a high level, these tools parse an SOS problem expressed in
+terms of polynomials, into a semidefinite optimization problem (SDP)
+which is later solved numerically using a backend SDP solver.
+
+In the simple examples below, we provide implementations using either
+of these tools. Just click on the corresponding tab to see the code,
+which you can then copy and paste into the corresponding program.
+
+For more advanced problems, please look at the exercises for the [AMS Short Course on Sums of Squares](exercises.html) 
+
+We point out that other SOS tools are also available, mainly in MATLAB, such as
 [YALMIP](https://yalmip.github.io/tutorial/sumofsquaresprogramming/)
 and
 [GloptiPoly](http://homepages.laas.fr/henrion/software/gloptipoly/).
 
-### Backend SDP Solvers
 
-SOS computations rely on semidefinite programming (SDP) solvers.
-The following solvers are available as of December 2018:
+## Installation and configuration
 
-- Macaulay2: [CSDP](https://github.com/coin-or/Csdp/wiki) (preinstalled), [MOSEK](https://www.mosek.com/), [SDPA](http://sdpa.sourceforge.net/).
-- MATLAB: [SeDuMi](http://sedumi.ie.lehigh.edu/), [MOSEK](https://www.mosek.com/), [SDPT3](http://www.math.nus.edu.sg/~mattohkc/SDPT3.html), [CSDP](https://github.com/coin-or/Csdp/wiki), [SDPNAL](http://www.math.nus.edu.sg/~mattohkc/SDPNALplus.html), [CDCS](https://github.com/oxfordcontrol/CDCS) and [SDPA](http://sdpa.sourceforge.net/).
-- Julia: [CSDP](https://github.com/coin-or/Csdp/wiki), [MOSEK](https://www.mosek.com/), [SCS](https://github.com/cvxgrp/scs), [SDPA](http://sdpa.sourceforge.net/).
+Here are simple instructions to install and configure the desired
+tools. Recall that for either choice, a backend SDP solver is needed,
+so you may need to install that too. Please see the full documentation
+of each package for additional details.
 
-### Installation and configuration
+### Main package
 
 For installation, type the following commands.
 
@@ -91,6 +102,23 @@ model = SOSModel(solver = MosekSolver())
 {% endcapture %}
 
 {% include nav-tabs.html macaulay2=macaulay2_code matlab=matlab_code julia=julia_code %}
+
+
+
+
+
+### Backend SDP Solvers
+
+SOS computations rely on semidefinite programming (SDP) solvers.
+The following solvers are available as of December 2018:
+
+- Macaulay2: [CSDP](https://github.com/coin-or/Csdp/wiki) (preinstalled), [MOSEK](https://www.mosek.com/), [SDPA](http://sdpa.sourceforge.net/).
+- MATLAB: [SeDuMi](http://sedumi.ie.lehigh.edu/), [MOSEK](https://www.mosek.com/), [SDPT3](http://www.math.nus.edu.sg/~mattohkc/SDPT3.html), [CSDP](https://github.com/coin-or/Csdp/wiki), [SDPNAL](http://www.math.nus.edu.sg/~mattohkc/SDPNALplus.html), [CDCS](https://github.com/oxfordcontrol/CDCS) and [SDPA](http://sdpa.sourceforge.net/).
+- Julia: [CSDP](https://github.com/coin-or/Csdp/wiki), [MOSEK](https://www.mosek.com/), [SCS](https://github.com/cvxgrp/scs), [SDPA](http://sdpa.sourceforge.net/).
+
+
+
+## Examples
 
 ### Example 1: Checking if a polynomial is SOS
 
