@@ -344,7 +344,7 @@ p = x^4 + x^2 - 3*x^2*z^2 + z^6 - t
 @objective(model, Max, t)
 solve(model)
 println("Solution: $(getvalue(t))")
-% Returns the lower bound -.17700
+# Returns the lower bound -.17700
 {% endcapture %}
 
 {% include nav-tabs.html macaulay2=macaulay2_code matlab=matlab_code julia=julia_code %}
