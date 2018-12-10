@@ -83,6 +83,8 @@ options.solver='csdp';
 
 <!-- +++++++++++++++ JULIA +++++++++++++++ -->
 {% capture julia_code %}
+{% include julia/preamble_using.jl %}
+
 {% include julia/preamble.jl %}
 {% endcapture %}
 
