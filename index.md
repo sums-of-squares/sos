@@ -394,7 +394,7 @@ eqs = [x^2 + y^2 - 1, y - x^2 - 0.5];
 
 <!-- +++++++++++++++ JULIA +++++++++++++++ -->
 {% capture julia_code %}
-{% include julia/example4_inequality.jl %}
+{% include julia/example4_inequalities.jl %}
 {% endcapture %}
 
 {% include nav-tabs.html macaulay2=macaulay2_code matlab=matlab_code julia=julia_code %}
