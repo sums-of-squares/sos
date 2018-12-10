@@ -314,7 +314,7 @@ println("Solution: $(getvalue(t))")
 
 Consider the polynomial $p = x^4+x^2-3 x^2 z^2+z^6$.  We may find a lower
 bound on $p$ by looking for the largest value of $t$ so that $p - t$ is a
-sum-of-squares. This can be formulated using similar techniques as the previous
+sum-of-squares. This can be formulated using techniques similar to the previous
 section.
 
 <!-- +++++++++++++ MACAULAY2 +++++++++++++ -->
