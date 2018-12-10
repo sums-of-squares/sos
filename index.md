@@ -21,7 +21,7 @@ In the simple examples below, we provide implementations using either
 of these tools. Just click on the corresponding tab to see the code,
 which you can then copy and paste into the corresponding program.
 
-For more advanced problems, please look at the exercises for the [AMS Short Course on Sums of Squares](exercises.html) 
+For more advanced problems, please look at the exercises for the [AMS Short Course on Sums of Squares](exercises.html).
 
 We point out that other SOS tools are also available, mainly in MATLAB, such as
 [YALMIP](https://yalmip.github.io/tutorial/sumofsquaresprogramming/)
