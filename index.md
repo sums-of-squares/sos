@@ -57,9 +57,7 @@ addsostools
 
 <!-- +++++++++++++++ JULIA +++++++++++++++ -->
 {% capture julia_code %}
-] add SumOfSquares
-] add DynamicPolynomials
-] add Mosek
+{% include julia/install.jl %}
 {% endcapture %}
 
 {% include nav-tabs.html macaulay2=macaulay2_code matlab=matlab_code julia=julia_code %}
@@ -85,16 +83,7 @@ options.solver='csdp';
 
 <!-- +++++++++++++++ JULIA +++++++++++++++ -->
 {% capture julia_code %}
-using MultivariatePolynomials
-using JuMP
-using PolyJuMP
-using SumOfSquares
-using DynamicPolynomials
-using Mosek
-using SemialgebraicSetst
-
-# Using Mosek as the SDP solver
-model = SOSModel(solver = MosekSolver())
+{% include julia/preamble.jl %}
 {% endcapture %}
 
 {% include nav-tabs.html macaulay2=macaulay2_code matlab=matlab_code julia=julia_code %}
@@ -140,15 +129,7 @@ p = 2*x^4 + 2*x^3*y - x^2*y^2 + 5*y^4;
 
 <!-- +++++++++++++++ JULIA +++++++++++++++ -->
 {% capture julia_code %}
-# Create symbolic variables
-@polyvar x y
-p = 2*x^4 + 2*x^3*y - x^2*y^2 + 5*y^4
-
-# We want constraint `p` to be a sum of squares
-@constraint model p >= 0
-
-# Solution status is `OPTIMAL` which means `p` is a sum of squares
-solve(model)
+{% include julia/example1.jl %}
 {% endcapture %}
 
 {% include nav-tabs.html macaulay2=macaulay2_code matlab=matlab_code julia=julia_code %}
@@ -174,11 +155,7 @@ p = x^4*y^2 + x^2*y^4 - 3*x^2*y^2 + 1
 
 <!-- +++++++++++++++ JULIA +++++++++++++++ -->
 {% capture julia_code %}
-@polyvar x y
-p = x^4*y^2 + x^2*y^4 - 3*x^2*y^2 + 1
-@constraint(model, p >= 0)
-solve(model)
-# Solution status is `Infeasible`
+{% include julia/example1_motzkin.jl %}
 {% endcapture %}
 
 {% include nav-tabs.html macaulay2=macaulay2_code matlab=matlab_code julia=julia_code %}
@@ -212,15 +189,7 @@ sosgetsol(prog, [s,t])
 
 <!-- +++++++++++++++ JULIA +++++++++++++++ -->
 {% capture julia_code %}
-@polyvar x y
-@variable(model, s)
-@variable(model, t)
-
-p = s*x^6 + t*y^6 - x^4*y^2 - x^2*y^4 - x^4 + 3*x^2*y^2 - y^4 - x^2 - y^2 + 1
-
-@constraint(model, p >= 0)
-solve(model)
-println("Solution: [ $(getvalue(s)), $(getvalue(t)) ]")
+{% include julia/example2.jl %}
 {% endcapture %}
 
 {% include nav-tabs.html macaulay2=macaulay2_code matlab=matlab_code julia=julia_code %}
@@ -253,15 +222,7 @@ sosgetsol(prog, [s,t])
 
 <!-- +++++++++++++++ JULIA +++++++++++++++ -->
 {% capture julia_code %}
-@polyvar x y
-@variable(model, s)
-@variable(model, t)
-p = s*x^6+t*y^6-x^4*y^2-x^2*y^4-x^4+3*x^2*y^2-y^4-x^2-y^2+1
-@constraint(model, p >= 0)
-@objective(model, Min, s+t)
-solve(model)
-println("Solution: [ $(getvalue(s)), $(getvalue(t)) ]")
-# returns s ~ 1.203, t ~ 1.203
+{% include julia/example2_objective.jl %}
 {% endcapture %}
 
 {% include nav-tabs.html macaulay2=macaulay2_code matlab=matlab_code julia=julia_code %}
@@ -292,16 +253,7 @@ sosgetsol(prog, t)
 
 <!-- +++++++++++++++ JULIA +++++++++++++++ -->
 {% capture julia_code %}
-@polyvar x y
-@variable(model, t)
-p1 = t*(1 + x*y)^2 - x*y + (1 - y)^2
-p2 = (1 - x*y)^2 + x*y + t*(1 + y)^2
-@constraint(model, p1 >= 0)
-@constraint(model, p2 >= 0)
-@objective(model, Min, t)
-solve(model)
-println("Solution: $(getvalue(t))")
-# Returns t ~ 0.25
+{% include julia/example2_both.jl %}
 {% endcapture %}
 
 {% include nav-tabs.html macaulay2=macaulay2_code matlab=matlab_code julia=julia_code %}
@@ -337,14 +289,7 @@ sosgetsol(prog, t)
 
 <!-- +++++++++++++++ JULIA +++++++++++++++ -->
 {% capture julia_code %}
-@polyvar x z
-@variable(model, t)
-p = x^4 + x^2 - 3*x^2*z^2 + z^6 - t
-@constraint(model, p >= 0)
-@objective(model, Max, t)
-solve(model)
-println("Solution: $(getvalue(t))")
-# Returns the lower bound -.17700
+{% include julia/example3.jl %}
 {% endcapture %}
 
 {% include nav-tabs.html macaulay2=macaulay2_code matlab=matlab_code julia=julia_code %}
@@ -408,16 +353,7 @@ eqs = [x^2 - x, y^2 - y];
 
 <!-- +++++++++++++++ JULIA +++++++++++++++ -->
 {% capture julia_code %}
-@polyvar x y
-@variable(model, t)
-# We need to convert each equality to two inequalities
-# to avoid numerical issues...
-S = @set x^2 >= x && y^2 >= y && x^2 <= x && y^2 <= y
-@constraint(model, x - y >= t, domain = S)
-@objective(model, Max, t)
-solve(model)
-println("Solution: $(getvalue(t))")
-# Returns t = -1
+{% include julia/example4.jl %}
 {% endcapture %}
 
 {% include nav-tabs.html macaulay2=macaulay2_code matlab=matlab_code julia=julia_code %}
@@ -456,14 +392,7 @@ eqs = [x^2 + y^2 - 1, y - x^2 - 0.5];
 
 <!-- +++++++++++++++ JULIA +++++++++++++++ -->
 {% capture julia_code %}
-@polyvar x y
-@variable(model, t)
-S = @set x^2 + y^2 == 1 && y - x^2 == 0.5 && x >=0 && y>=0.5
-@constraint(model, x + y >= t, domain = S, maxdegree = 2)
-@objective(model, Max, t)
-solve(model)
-println("Solution: $(getvalue(t))")
-# Returns t ~ 1.3911
+{% include julia/example4_inequality.jl %}
 {% endcapture %}
 
 {% include nav-tabs.html macaulay2=macaulay2_code matlab=matlab_code julia=julia_code %}
