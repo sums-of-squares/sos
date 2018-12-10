@@ -57,13 +57,9 @@ addsostools
 
 <!-- +++++++++++++++ JULIA +++++++++++++++ -->
 {% capture julia_code %}
-] add MultivariatePolynomials
-] add JuMP
-] add PolyJuMP
 ] add SumOfSquares
 ] add DynamicPolynomials
 ] add Mosek
-] add SemialgebraicSets
 {% endcapture %}
 
 {% include nav-tabs.html macaulay2=macaulay2_code matlab=matlab_code julia=julia_code %}
