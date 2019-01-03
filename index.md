@@ -101,7 +101,7 @@ The following solvers are available as of December 2018:
 
 - Macaulay2: [CSDP](https://github.com/coin-or/Csdp/wiki) (preinstalled), [MOSEK](https://www.mosek.com/), [SDPA](http://sdpa.sourceforge.net/).
 - MATLAB: [SeDuMi](http://sedumi.ie.lehigh.edu/), [MOSEK](https://www.mosek.com/), [SDPT3](http://www.math.nus.edu.sg/~mattohkc/SDPT3.html), [CSDP](https://github.com/coin-or/Csdp/wiki), [SDPNAL](http://www.math.nus.edu.sg/~mattohkc/SDPNALplus.html), [CDCS](https://github.com/oxfordcontrol/CDCS) and [SDPA](http://sdpa.sourceforge.net/).
-- Julia: [CSDP](https://github.com/coin-or/Csdp/wiki), [MOSEK](https://www.mosek.com/), [SCS](https://github.com/cvxgrp/scs), [SDPA](http://sdpa.sourceforge.net/).
+- Julia: [CSDP](https://github.com/coin-or/Csdp/wiki), [MOSEK](https://www.mosek.com/), [SCS](https://github.com/cvxgrp/scs), [SDPA](http://sdpa.sourceforge.net/), [SeDuMi](https://github.com/blegat/SeDuMi.jl).
 
 
 
