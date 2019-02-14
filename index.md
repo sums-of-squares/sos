@@ -100,7 +100,7 @@ SOS computations rely on semidefinite programming (SDP) solvers.
 The following solvers are available as of December 2018:
 
 - Macaulay2: [CSDP](https://github.com/coin-or/Csdp/wiki) (preinstalled), [MOSEK](https://www.mosek.com/), [SDPA](http://sdpa.sourceforge.net/).
-- MATLAB: [SeDuMi](http://sedumi.ie.lehigh.edu/), [MOSEK](https://www.mosek.com/), [SDPT3](http://www.math.nus.edu.sg/~mattohkc/SDPT3.html), [CSDP](https://github.com/coin-or/Csdp/wiki), [SDPNAL](http://www.math.nus.edu.sg/~mattohkc/SDPNALplus.html), [CDCS](https://github.com/oxfordcontrol/CDCS) and [SDPA](http://sdpa.sourceforge.net/).
+- MATLAB: [CDCS](https://github.com/oxfordcontrol/CDCS), [CSDP](https://github.com/coin-or/Csdp/wiki), [MOSEK](https://www.mosek.com/), [SDPA](http://sdpa.sourceforge.net/), [SDPNAL](http://www.math.nus.edu.sg/~mattohkc/SDPNALplus.html), [SDPT3](http://www.math.nus.edu.sg/~mattohkc/SDPT3.html), [SeDuMi](http://sedumi.ie.lehigh.edu/).
 - Julia: [CSDP](https://github.com/JuliaOpt/CSDP.jl), [MOSEK](https://github.com/JuliaOpt/Mosek.jl), [SCS](https://github.com/JuliaOpt/SCS.jl), [SDPA](https://github.com/blegat/SDPA.jl), [SeDuMi](https://github.com/blegat/SeDuMi.jl).
 
 
