@@ -1,2 +1,2 @@
 # Using Mosek as the SDP solver
-model = SOSModel(solver = MosekSolver())
+model = SOSModel(with_optimizer(Mosek.Optimizer))
