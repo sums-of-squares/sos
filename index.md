@@ -101,7 +101,7 @@ The following solvers are available as of December 2018:
 
 - Macaulay2: [CSDP](https://github.com/coin-or/Csdp/wiki) (preinstalled), [MOSEK](https://www.mosek.com/), [SDPA](http://sdpa.sourceforge.net/).
 - MATLAB: [CDCS](https://github.com/oxfordcontrol/CDCS), [CSDP](https://github.com/coin-or/Csdp/wiki), [MOSEK](https://www.mosek.com/), [SDPA](http://sdpa.sourceforge.net/), [SDPNAL](http://www.math.nus.edu.sg/~mattohkc/SDPNALplus.html), [SDPT3](http://www.math.nus.edu.sg/~mattohkc/SDPT3.html), [SeDuMi](http://sedumi.ie.lehigh.edu/).
-- Julia: [CDCS](https://github.com/blegat/CDCS.jl), [CSDP](https://github.com/JuliaOpt/CSDP.jl), [MOSEK](https://github.com/JuliaOpt/Mosek.jl), [SCS](https://github.com/JuliaOpt/SCS.jl), [SDPA](https://github.com/JuliaOpt/SDPA.jl), [SeDuMi](https://github.com/JuliaOpt/SeDuMi.jl).
+- Julia: [CDCS](https://github.com/blegat/CDCS.jl), [CSDP](https://github.com/JuliaOpt/CSDP.jl), [MOSEK](https://github.com/JuliaOpt/Mosek.jl), [ProxSDP](https://github.com/mariohsouto/ProxSDP.jl), [SCS](https://github.com/JuliaOpt/SCS.jl), [SDPA](https://github.com/JuliaOpt/SDPA.jl), [SeDuMi](https://github.com/JuliaOpt/SeDuMi.jl).
 
 
 
