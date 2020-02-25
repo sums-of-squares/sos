@@ -20,8 +20,9 @@ end
     @test termination_status(model) == MOI.INFEASIBLE
 end
 @test_example "example2" begin
-    @test value(s) ≈  4.6555  rtol=1e-4
-    @test value(t) ≈  4.6555  rtol=1e-4
+    @test termination_status(model) == MOI.OPTIMAL
+    @test value(s) ≈  4.2956  rtol=1e-4
+    @test value(t) ≈  4.2956  rtol=1e-4
 end
 @test_example "example2_objective" begin
     @test value(s) ≈  1.2032  rtol=1e-4
@@ -31,7 +32,7 @@ end
     @test value(t) ≈  1/4     rtol=1e-6
 end
 @test_example "example3" begin
-    @test value(t) ≈ -0.177   rtol=1e-3
+    @test value(t) ≈ -0.1778  rtol=1e-3
 end
 @test_example "example4" begin
     @test value(t) ≈ -1       rtol=1e-6
