@@ -9,7 +9,7 @@ computations. Depending on which mathematical computer
 language/environment you are most familiar with, you may use *either*
 of the following tools:
 
-- Macaulay2: [SOS.m2](https://github.com/diegcif/SOSm2)
+- Macaulay2: [SumsOfSquares.m2](https://github.com/diegcif/SumsOfSquares.m2)
 - MATLAB: [SOSTOOLS](https://www.cds.caltech.edu/sostools/)
 - Julia: [SumOfSquares.jl](https://github.com/JuliaOpt/SumOfSquares.jl)
 
@@ -43,7 +43,7 @@ For installation, type the following commands.
 <!-- +++++++++++++ MACAULAY2 +++++++++++++ -->
 {% capture macaulay2_code %}
 installPackage "SemidefiniteProgramming"
-installPackage "SOS"
+installPackage "SumsOfSquares"
 
 {% endcapture %}
 
@@ -66,7 +66,7 @@ Once installed, the following lines must be entered at the beginning of each ses
 
 <!-- +++++++++++++ MACAULAY2 +++++++++++++ -->
 {% capture macaulay2_code %}
-needsPackage( "SOS" );
+needsPackage( "SumsOfSquares" );
 
 -- the default solver is CSDP
 -- it can be changed with the command
