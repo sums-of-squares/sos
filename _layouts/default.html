@@ -12,23 +12,32 @@
       // Adapted from Spark project:
       // https://github.com/apache/spark-website/blob/asf-site/js/lang-tabs.js
 
+      function toggleLanguage(lang) {
+          $(".tab-pane").removeClass("active");
+          $(".tab-pane-" + lang).addClass("active");
+          $(".lang-tab").removeClass("active");
+          $(".lang-tab-" + lang).addClass("active");
+      }
+
       function changeLanguage(lang) {
           return function(e) {
               e.preventDefault();
               var scrollOffset = $(this).offset().top - $(document).scrollTop();
-              $(".tab-pane").removeClass("active");
-              $(".tab-pane-" + lang).addClass("active");
-              $(".lang-tab").removeClass("active");
-              $(".lang-tab-" + lang).addClass("active");
+              toggleLanguage(lang);
               $(document).scrollTop($(this).offset().top - scrollOffset);
           };
       }
 
       $(function() {
-          var languages = ["macaulay2", "matlab", "julia"];
+          var languages = ["macaulay2", "matlab", "julia", "python"];
           for (var i = 0; i < languages.length; i++) {
               var lang = languages[i];
               $(".lang-tab-" + lang).click(changeLanguage(lang));
+          }
+
+          var lang = window.location.hash.slice(1);
+          if (languages.includes(lang)) {
+              toggleLanguage(lang);
           }
       });
     </script>

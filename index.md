@@ -12,6 +12,7 @@ of the following tools:
 - Macaulay2: [SumsOfSquares.m2](https://github.com/diegcif/SumsOfSquares.m2)
 - MATLAB: [SOSTOOLS](https://www.cds.caltech.edu/sostools/)
 - Julia: [SumOfSquares.jl](https://github.com/JuliaOpt/SumOfSquares.jl)
+- Python: [SumOfSquares.py](https://github.com/yuanchenyang/SumOfSquares.py)
 
 At a high level, these tools parse an SOS problem expressed in
 terms of polynomials, into a semidefinite optimization problem (SDP)
@@ -60,7 +61,13 @@ addsostools
 {% include julia/install.jl %}
 {% endcapture %}
 
-{% include nav-tabs.html macaulay2=macaulay2_code matlab=matlab_code julia=julia_code %}
+<!-- +++++++++++++++ PYTHON +++++++++++++++ -->
+{% capture python_code %}
+# Download SumOfSquares.py from github and run from the terminal:
+# $ python setup.py install
+{% endcapture %}
+
+{% include nav-tabs.html macaulay2=macaulay2_code matlab=matlab_code julia=julia_code python=python_code%}
 
 Once installed, the following lines must be entered at the beginning of each session.
 
@@ -88,9 +95,13 @@ options.solver='csdp';
 {% include julia/preamble.jl %}
 {% endcapture %}
 
-{% include nav-tabs.html macaulay2=macaulay2_code matlab=matlab_code julia=julia_code %}
+<!-- +++++++++++++++ PYTHON +++++++++++++++ -->
+{% capture python_code %}
+import sympy as sp
+from SumOfSquares import SOSProblem, poly_opt_prob
+{% endcapture %}
 
-
+{% include nav-tabs.html macaulay2=macaulay2_code matlab=matlab_code julia=julia_code python=python_code%}
 
 
 
@@ -102,7 +113,7 @@ The following solvers are available as of December 2018:
 - Macaulay2: [CSDP](https://github.com/coin-or/Csdp/wiki) (preinstalled), [MOSEK](https://www.mosek.com/), [SDPA](http://sdpa.sourceforge.net/).
 - MATLAB: [CDCS](https://github.com/oxfordcontrol/CDCS), [CSDP](https://github.com/coin-or/Csdp/wiki), [MOSEK](https://www.mosek.com/), [SDPA](http://sdpa.sourceforge.net/), [SDPNAL](http://www.math.nus.edu.sg/~mattohkc/SDPNALplus.html), [SDPT3](http://www.math.nus.edu.sg/~mattohkc/SDPT3.html), [SeDuMi](http://sedumi.ie.lehigh.edu/).
 - Julia: [CDCS](https://github.com/oxfordcontrol/CDCS.jl), [COSMO](https://github.com/oxfordcontrol/COSMO.jl), [CSDP](https://github.com/JuliaOpt/CSDP.jl), [MOSEK](https://github.com/JuliaOpt/Mosek.jl), [ProxSDP](https://github.com/mariohsouto/ProxSDP.jl), [SCS](https://github.com/JuliaOpt/SCS.jl), [SDPA](https://github.com/JuliaOpt/SDPA.jl), [SDPAFamily](https://github.com/ericphanson/SDPAFamily.jl), [SDPNAL](https://github.com/JuliaOpt/SDPNAL.jl), [SDPT3](https://github.com/JuliaOpt/SDPT3.jl), [SeDuMi](https://github.com/JuliaOpt/SeDuMi.jl).
-
+- Python: [MOSEK](https://github.com/JuliaOpt/Mosek.jl), [CVXOPT](http://cvxopt.org/)
 
 
 ## Examples
@@ -134,7 +145,23 @@ p = 2*x^4 + 2*x^3*y - x^2*y^2 + 5*y^4;
 {% include julia/example1.jl %}
 {% endcapture %}
 
-{% include nav-tabs.html macaulay2=macaulay2_code matlab=matlab_code julia=julia_code %}
+<!-- +++++++++++++++ PYTHON +++++++++++++++ -->
+{% capture python_code %}
+# Defines symbolic variables and polynomial
+x, y = sp.symbols('x y')
+p = 2*x**4 + 2*x**3*y - x**2*y**2 + 5*y**4
+prob = SOSProblem()
+
+# Adds Sum-of-Squares constaint and solves problem
+const = prob.add_sos_constraint(p, [x, y])
+prob.solve()
+
+# Prints Sum-of-Squares decomposition
+print(sum(const.get_sos_decomp()))
+{% endcapture %}
+
+{% include nav-tabs.html macaulay2=macaulay2_code matlab=matlab_code julia=julia_code python=python_code%}
+
 
 We next consider the Motzkin polynomial, $p = x^4 y^2 + x^2 y^4 - 3 x^2 y^2 +
 1$, which is nonnegative but no SOS decomposition exists.
@@ -160,7 +187,17 @@ p = x^4*y^2 + x^2*y^4 - 3*x^2*y^2 + 1
 {% include julia/example1_motzkin.jl %}
 {% endcapture %}
 
-{% include nav-tabs.html macaulay2=macaulay2_code matlab=matlab_code julia=julia_code %}
+<!-- +++++++++++++++ PYTHON +++++++++++++++ -->
+{% capture python_code %}
+x, y = sp.symbols('x y')
+p = x**4*y**2 + x**2*y**4 - 3*x**2*y**2 + 1
+prob = SOSProblem()
+prob.add_sos_constraint(p, [x, y])
+prob.solve() # Raises SolutionFailure error due to infeasibility
+{% endcapture %}
+
+
+{% include nav-tabs.html macaulay2=macaulay2_code matlab=matlab_code julia=julia_code python=python_code%}
 
 ### Example 2: Parametric SOS problems
 
@@ -194,7 +231,20 @@ sosgetsol(prog, [s,t])
 {% include julia/example2.jl %}
 {% endcapture %}
 
-{% include nav-tabs.html macaulay2=macaulay2_code matlab=matlab_code julia=julia_code %}
+<!-- +++++++++++++++ PYTHON +++++++++++++++ -->
+{% capture python_code %}
+x, y, s, t = sp.symbols('x y s t')
+p = s*x**6 + t*y**6 - x**4*y**2 - x**2*y**4 - x**4 \
+    + 3*x**2*y**2 - y**4 - x**2 - y**2 + 1
+prob = SOSProblem()
+prob.add_sos_constraint(p, [x, y])
+sv, tv = prob.sym_to_var(s), prob.sym_to_var(t)
+prob.solve()
+prob.set_objective('min', sv+tv)
+print(sv.value, tv.value)
+{% endcapture %}
+
+{% include nav-tabs.html macaulay2=macaulay2_code matlab=matlab_code julia=julia_code python=python_code%}
 
 We can also do parameter optimization with $s$ and $t$. Among the values of $s$
 and $t$ that make the polynomial a sum-of-squares, we look for those with the
@@ -227,7 +277,21 @@ sosgetsol(prog, [s,t])
 {% include julia/example2_objective.jl %}
 {% endcapture %}
 
-{% include nav-tabs.html macaulay2=macaulay2_code matlab=matlab_code julia=julia_code %}
+<!-- +++++++++++++++ PYTHON +++++++++++++++ -->
+{% capture python_code %}
+x, y, s, t = sp.symbols('x y s t')
+p = s*x**6 + t*y**6 - x**4*y**2 - x**2*y**4 - x**4 \
+    + 3*x**2*y**2 - y**4 - x**2 - y**2 + 1
+prob = SOSProblem()
+prob.add_sos_constraint(p, [x, y])
+sv, tv = prob.sym_to_var(s), prob.sym_to_var(t)
+prob.set_objective('min', sv+tv)
+prob.solve()
+print(sv.value, tv.value)
+# returns s ~ 1.203, t ~ 1.203
+{% endcapture %}
+
+{% include nav-tabs.html macaulay2=macaulay2_code matlab=matlab_code julia=julia_code python=python_code%}
 
 Finally, we consider a problem involving multiple SOS constraints. Suppose we
 want to find the smallest $t$ so that both $p_1 = t(1+xy)^2 - xy + (1-y)^2$ and
@@ -258,7 +322,22 @@ sosgetsol(prog, t)
 {% include julia/example2_both.jl %}
 {% endcapture %}
 
-{% include nav-tabs.html macaulay2=macaulay2_code matlab=matlab_code julia=julia_code %}
+<!-- +++++++++++++++ PYTHON +++++++++++++++ -->
+{% capture python_code %}
+x, y, t = sp.symbols('x y t')
+p1 = t*(1 + x*y)**2 - x*y + (1 - y)**2
+p2 = (1 - x*y)**2 + x*y + t*(1 + y)**2
+prob = SOSProblem()
+prob.add_sos_constraint(p1, [x, y])
+prob.add_sos_constraint(p2, [x, y])
+tv = prob.sym_to_var(t)
+prob.set_objective('min', tv)
+prob.solve()
+print(tv.value)
+# returns t ~ 0.25
+{% endcapture %}
+
+{% include nav-tabs.html macaulay2=macaulay2_code matlab=matlab_code julia=julia_code python=python_code%}
 
 ### Example 3: Global polynomial optimization
 
@@ -294,7 +373,18 @@ sosgetsol(prog, t)
 {% include julia/example3.jl %}
 {% endcapture %}
 
-{% include nav-tabs.html macaulay2=macaulay2_code matlab=matlab_code julia=julia_code %}
+<!-- +++++++++++++++ PYTHON +++++++++++++++ -->
+{% capture python_code %}
+x, y, t = sp.symbols('x y t')
+p = x**4 + x**2 - 3*x**2*y**2 + y**6
+prob = SOSProblem()
+prob.add_sos_constraint(p-t, [x, y])
+prob.set_objective('max', prob.sym_to_var(t))
+prob.solve(solver='cvxopt')
+print(prob.value)
+{% endcapture %}
+
+{% include nav-tabs.html macaulay2=macaulay2_code matlab=matlab_code julia=julia_code python=python_code%}
 
 Alternatively, some tools have a simplified way for finding this lower bound.
 
@@ -319,7 +409,16 @@ p = x^4+x^2-3*x^2*z^2+z^6
 # Not available in SumOfSquares.jl
 {% endcapture %}
 
-{% include nav-tabs.html macaulay2=macaulay2_code matlab=matlab_code julia=julia_code %}
+<!-- +++++++++++++++ PYTHON +++++++++++++++ -->
+{% capture python_code %}
+x, y, t = sp.symbols('x y t')
+p = x**4 + x**2 - 3*x**2*y**2 + y**6
+prob = poly_opt_prob([x, y], p)
+prob.solve(solver='cvxopt')
+print(prob.value)
+{% endcapture %}
+
+{% include nav-tabs.html macaulay2=macaulay2_code matlab=matlab_code julia=julia_code python=python_code%}
 
 ### Example 4: Constrained polynomial optimization
 
@@ -358,7 +457,16 @@ eqs = [x^2 - x, y^2 - y];
 {% include julia/example4.jl %}
 {% endcapture %}
 
-{% include nav-tabs.html macaulay2=macaulay2_code matlab=matlab_code julia=julia_code %}
+<!-- +++++++++++++++ PYTHON +++++++++++++++ -->
+{% capture python_code %}
+x, y = sp.symbols('x y')
+prob = poly_opt_prob([x, y], x - y, eqs=[x**2-x, y**2-y], deg=1)
+prob.solve()
+print(prob.value)
+# returns t = -1
+{% endcapture %}
+
+{% include nav-tabs.html macaulay2=macaulay2_code matlab=matlab_code julia=julia_code python=python_code%}
 
 Now consider a problem with equalities and inequalities:
 
@@ -397,4 +505,14 @@ eqs = [x^2 + y^2 - 1, y - x^2 - 0.5];
 {% include julia/example4_inequalities.jl %}
 {% endcapture %}
 
-{% include nav-tabs.html macaulay2=macaulay2_code matlab=matlab_code julia=julia_code %}
+<!-- +++++++++++++++ PYTHON +++++++++++++++ -->
+{% capture python_code %}
+x, y = sp.symbols('x y')
+prob = poly_opt_prob([x, y], x + y, eqs=[x**2+y**2-1, y-x**2-0.5],
+                     ineqs=[x, y-0.5], deg=2)
+prob.solve()
+print(prob.value)
+# returns t ~ 1.3911
+{% endcapture %}
+
+{% include nav-tabs.html macaulay2=macaulay2_code matlab=matlab_code julia=julia_code python=python_code%}
