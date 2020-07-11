@@ -378,10 +378,12 @@ sosgetsol(prog, t)
 x, y, t = sp.symbols('x y t')
 p = x**4 + x**2 - 3*x**2*y**2 + y**6
 prob = SOSProblem()
-prob.add_sos_constraint(p-t, [x, y])
+# Use Newton polytope reduction
+prob.add_sos_constraint(p-t, [x, y], sparse=True)
 prob.set_objective('max', prob.sym_to_var(t))
-prob.solve(solver='cvxopt')
+prob.solve()
 print(prob.value)
+# Returns the lower bound -.177979
 {% endcapture %}
 
 {% include nav-tabs.html macaulay2=macaulay2_code matlab=matlab_code julia=julia_code python=python_code%}
@@ -414,8 +416,9 @@ p = x^4+x^2-3*x^2*z^2+z^6
 x, y, t = sp.symbols('x y t')
 p = x**4 + x**2 - 3*x**2*y**2 + y**6
 prob = poly_opt_prob([x, y], p)
-prob.solve(solver='cvxopt')
+prob.solve()
 print(prob.value)
+# Returns the lower bound -.177979
 {% endcapture %}
 
 {% include nav-tabs.html macaulay2=macaulay2_code matlab=matlab_code julia=julia_code python=python_code%}
