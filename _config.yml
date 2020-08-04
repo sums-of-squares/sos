@@ -2,5 +2,5 @@ markdown: kramdown
 highlighter: rouge
 theme: jekyll-theme-slate
 title: Getting started with Sum of Squares
-description: Documentation and examples on Sum of Squares solvers
+description: Documentation and examples on using Sum of Squares solvers, tutorial and examples of Sum of Squares programming
 google_analytics: UA-43609447-5

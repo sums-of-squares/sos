@@ -4,10 +4,10 @@ layout: default
 
 ## Introduction
 
-In this guide we explain how to perform basic sum of squares (SOS)
-computations. Depending on which mathematical computer
-language/environment you are most familiar with, you may use *either*
-of the following tools:
+In this guide we explain how to perform basic sum of squares (SOS) computations,
+and provide numerical examples of sum of squares programming/optimization using
+solvers. Depending on which mathematical computer language/environment you are
+most familiar with, you may use *either* of the following tools:
 
 - Macaulay2: [SumsOfSquares.m2](https://github.com/diegcif/SumsOfSquares.m2)
 - MATLAB: [SOSTOOLS](https://www.cds.caltech.edu/sostools/)
@@ -22,7 +22,8 @@ In the simple examples below, we provide implementations using either
 of these tools. Just click on the corresponding tab to see the code,
 which you can then copy and paste into the corresponding program.
 
-For more advanced problems, please look at the exercises for the [AMS Short Course on Sums of Squares](exercises.html).
+For more advanced problems, please look at the exercises for the [AMS Short
+Course on Sums of Squares](exercises.html).
 
 We point out that other SOS tools are also available, mainly in MATLAB, such as
 [YALMIP](https://yalmip.github.io/tutorial/sumofsquaresprogramming/)
