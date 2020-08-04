@@ -98,6 +98,7 @@ options.solver='csdp';
 <!-- +++++++++++++++ PYTHON +++++++++++++++ -->
 {% capture python_code %}
 import sympy as sp
+import numpy as np
 from SumOfSquares import SOSProblem, poly_opt_prob
 {% endcapture %}
 
@@ -519,3 +520,102 @@ print(prob.value)
 {% endcapture %}
 
 {% include nav-tabs.html macaulay2=macaulay2_code matlab=matlab_code julia=julia_code python=python_code%}
+
+### Example 5: Dual formulation and Pseudoexpectations
+
+The dual of a SOS problem can be interpreted as optimizing linear functionals of
+low-degree polynomials, also known as
+[pseudoexpectations](https://www.sumofsquares.org/public/lec01-2_definitions.html#sec-pseudo-distributions). Using
+[SumOfSquares.py](https://github.com/yuanchenyang/SumOfSquares.py), we can
+specify constraints in terms of pseudoexpectations, as well as extract the
+pseudoexpectation corresponding to the dual of a SOS constraint.
+
+The following example explicitly computes an infeasibility certificate for
+writing the Motzkin polynomial $p(x, y) = x^4 y^2 + x^2 y^4 - 3 x^2 y^2 + 1$ as
+a sum of squares, a pseudoexpectation where $\tilde{\mathbb{E}}[p(x,y)] = -1$.
+
+{% capture python_code %}
+x, y = sp.symbols('x y')
+p = x**4*y**2 + x**2*y**4 - 3*x**2*y**2 + 1 # Motzkin polynomial
+prob = SOSProblem()
+# A degree 6 pseudoexpectation operator in variables x and y
+pEx = prob.get_pexpect([x, y], 6)
+prob.add_constraint(pEx(p) == -1)
+prob.solve()
+
+# After solving, we can compute pEx on any suitable polynomial
+# in x and y of degree at most 6
+print(pEx(x**2*y**4 + x*y + 3))
+{% endcapture %}
+
+{% include python-tabs.html python=python_code%}
+
+Every SOS constraint has an associated pseudoexpectation, we can access it for
+use in rounding algorithms. The next example presents both the primal and dual
+SOS relaxations of the following optimization problem over the sphere:
+
+$$
+    \max_{x,y,z} \quad (x+\phi y)(x-\phi y)(y+\phi z)(y-\phi z)(z+\phi x)(z-\phi x)
+    \quad\text{ s.t. }\quad
+    x^2 + y^2 + z^2 = 1.
+$$
+
+{% capture python_code %}
+x, y, z, t= sp.symbols('x y z t')
+phi = (1+np.sqrt(5))/2
+x2 = x**2 + y**2 + z**2
+f = (x+phi*y)*(x-phi*y)*(y+phi*z)*(y-phi*z)*(z+phi*x)*(z-phi*x)
+
+p = t * x2**3 - f
+prob_p = SOSProblem()
+const_p = prob_p.add_sos_constraint(p, [x, y, z])
+tv = prob_p.sym_to_var(t)
+prob_p.set_objective('min', tv)
+prob_p.solve()
+
+prob_d = SOSProblem()
+PEx = prob_d.get_pexpect([x, y, z], 6, hom=True)
+prob_d.add_constraint(PEx(x2**3) == 1)
+prob_d.set_objective('max', PEx(f))
+prob_d.solve()
+
+# prob_p.value ~= prob_d.value (up to numerical error)
+{% endcapture %}
+
+{% include python-tabs.html python=python_code%}
+
+After solving the SOS relaxation, we can produce a feasible solution using the
+following rounding algorithm:
+
+1. Sample $v$ uniformly at random from the sphere
+2. Compute $M = \tilde{\mathbb{E}}_x[\langle v, x \rangle^4 xx^T]$
+3. Return the normalized top eigenvector of $M$
+
+We can implement this rounding algorithm using either the primal or dual
+formulation:
+
+{% capture python_code %}
+def sample_M_entries():
+    v = np.random.normal(size=3)
+    v = v/np.linalg.norm(v)
+    p = (a*x+b*y+c*z)**4
+    return [m*p for m in (x*x, y*y, z*z, x*y, x*z, y*z)]
+
+def round_top_eig(Mxx, Myy, Mzz, Mxy, Mxz, Myz):
+    M = np.array([[Mxx, Mxy, Mxz], [Mxy, Myy, Myz], [Mxz, Myz, Mzz]])
+    v = np.linalg.eigh(M)[1][:,-1]
+    return v / np.linalg.norm(v)
+
+def round_primal():
+    moments = [float(const_p.pexpect(e)) for e in sample_M_entries()]
+    return round_top_eig(*moments)
+
+def round_dual():
+    moments = [float(PEx(e)) for e in sample_M_entries()]
+    return round_top_eig(*moments)
+
+# round_primal() or round_dual() produces a vector on the sphere
+# sampled from the rounding algorithm
+{% endcapture %}
+
+{% include python-tabs.html python=python_code%}
