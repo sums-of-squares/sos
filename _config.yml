@@ -3,3 +3,4 @@ highlighter: rouge
 theme: jekyll-theme-slate
 title: Getting started with Sum of Squares
 description: Documentation and examples on Sum of Squares solvers
+google_analytics: UA-43609447-5
