@@ -539,13 +539,13 @@ x, y = sp.symbols('x y')
 p = x**4*y**2 + x**2*y**4 - 3*x**2*y**2 + 1 # Motzkin polynomial
 prob = SOSProblem()
 # A degree 6 pseudoexpectation operator in variables x and y
-pEx = prob.get_pexpect([x, y], 6)
-prob.add_constraint(pEx(p) == -1)
+PEx = prob.get_pexpect([x, y], 6)
+prob.add_constraint(PEx(p) == -1)
 prob.solve()
 
-# After solving, we can compute pEx on any suitable polynomial
+# After solving, we can compute PEx on any suitable polynomial
 # in x and y of degree at most 6
-print(pEx(x**2*y**4 + x*y + 3))
+print(PEx(x**2*y**4 + x*y + 3))
 {% endcapture %}
 
 {% include python-tabs.html python=python_code%}
@@ -614,7 +614,7 @@ def round_dual():
     moments = [float(PEx(e)) for e in sample_M_entries()]
     return round_top_eig(*moments)
 
-# round_primal() or round_dual() produces a vector on the sphere
+# round_primal() or round_dual() produces a feasible solution
 # sampled from the rounding algorithm
 {% endcapture %}
 
