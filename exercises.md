@@ -9,7 +9,9 @@ layout: default
 </a>
 
 Here is a list of exercises to be used during the
-[AMS Short Course "Sum of Squares: Theory and Applications"](http://www.ams.org/meetings/short-courses/short-course-general).
+[AMS Short Course "Sum of Squares: Theory and Applications"](https://jointmathematicsmeetings.org/meetings/national/jmm2019/2217_shortcourse).
+
+See also the [AMS Course Lecture Notes/Slides](https://www.ams.org/meetings/shortcourse/lecturenotes-2019)
 
 &nbsp;
 
