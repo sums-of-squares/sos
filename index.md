@@ -123,7 +123,7 @@ The following solvers are available as of December 2018:
 ### Example 1: Checking if a polynomial is SOS
 
 Here we find an SOS decomposition for the polynomial
-$p = 2 x^4 + 2 x^3 y - x^2 y^2 + 5 y^4$.
+$$p = 2 x^4 + 2 x^3 y - x^2 y^2 + 5 y^4$$.
 
 <!-- +++++++++++++ MACAULAY2 +++++++++++++ -->
 {% capture macaulay2_code %}
@@ -165,8 +165,8 @@ print(sum(const.get_sos_decomp()))
 {% include nav-tabs.html macaulay2=macaulay2_code matlab=matlab_code julia=julia_code python=python_code%}
 
 
-We next consider the Motzkin polynomial, $p = x^4 y^2 + x^2 y^4 - 3 x^2 y^2 +
-1$, which is nonnegative but no SOS decomposition exists.
+We next consider the Motzkin polynomial, $$p = x^4 y^2 + x^2 y^4 - 3 x^2 y^2 +
+1$$, which is nonnegative but no SOS decomposition exists.
 
 <!-- +++++++++++++ MACAULAY2 +++++++++++++ -->
 {% capture macaulay2_code %}
@@ -203,7 +203,7 @@ prob.solve() # Raises SolutionFailure error due to infeasibility
 
 ### Example 2: Parametric SOS problems
 
-In the next example we consider the variables $s$, $t$ as parameters, and find
+In the next example we consider the variables $$s$$, $$t$$ as parameters, and find
 values for them such that the following polynomial is a sum-of-squares.
 
 $$ p = s x^6+t y^6-x^4 y^2-x^2 y^4-x^4+3 x^2 y^2-y^4-x^2-y^2+1 $$
@@ -248,9 +248,9 @@ print(sv.value, tv.value)
 
 {% include nav-tabs.html macaulay2=macaulay2_code matlab=matlab_code julia=julia_code python=python_code%}
 
-We can also do parameter optimization with $s$ and $t$. Among the values of $s$
-and $t$ that make the polynomial a sum-of-squares, we look for those with the
-minimum value of $s+t$.
+We can also do parameter optimization with $$s$$ and $$t$$. Among the values of $$s$$
+and $$t$$ that make the polynomial a sum-of-squares, we look for those with the
+minimum value of $$s+t$$.
 
 <!-- +++++++++++++ MACAULAY2 +++++++++++++ -->
 {% capture macaulay2_code %}
@@ -296,8 +296,8 @@ print(sv.value, tv.value)
 {% include nav-tabs.html macaulay2=macaulay2_code matlab=matlab_code julia=julia_code python=python_code%}
 
 Finally, we consider a problem involving multiple SOS constraints. Suppose we
-want to find the smallest $t$ so that both $p_1 = t(1+xy)^2 - xy + (1-y)^2$ and
-$p_2 = (1-xy)^2+xy+t(1+y)^2$ are sums of squares.
+want to find the smallest $$t$$ so that both $$p_1 = t(1+xy)^2 - xy + (1-y)^2$$ and
+$$p_2 = (1-xy)^2+xy+t(1+y)^2$$ are sums of squares.
 
 <!-- +++++++++++++ MACAULAY2 +++++++++++++ -->
 {% capture macaulay2_code %}
@@ -343,8 +343,8 @@ print(tv.value)
 
 ### Example 3: Global polynomial optimization
 
-Consider the polynomial $p = x^4+x^2-3 x^2 z^2+z^6$.  We may find a lower
-bound on $p$ by looking for the largest value of $t$ so that $p - t$ is a
+Consider the polynomial $$p = x^4+x^2-3 x^2 z^2+z^6$$.  We may find a lower
+bound on $$p$$ by looking for the largest value of $$t$$ so that $$p - t$$ is a
 sum-of-squares. This can be formulated using techniques similar to the previous
 section.
 
@@ -427,8 +427,8 @@ print(prob.value)
 
 ### Example 4: Constrained polynomial optimization
 
-Consider minimizing a polynomial $f(x)$ subject to equations $h_i(x)=0$ and
-inequalities $g_j(x)\geq 0$. Given a degree bound-$2d$, we can find a lower
+Consider minimizing a polynomial $$f(x)$$ subject to equations $$h_i(x)=0$$ and
+inequalities $$g_j(x)\geq 0$$. Given a degree bound-$$2d$$, we can find a lower
 bound based on SOS.  The next example has only equality constraints:
 
 $$ \min_{x,y} \quad x-y \quad\text{ s.t. }\quad x^2 - x = y^2 - y = 0.$$
@@ -532,8 +532,8 @@ specify constraints in terms of pseudoexpectations, as well as extract the
 pseudoexpectation corresponding to the dual of a SOS constraint.
 
 The following example explicitly computes an infeasibility certificate for
-writing the Motzkin polynomial $p(x, y) = x^4 y^2 + x^2 y^4 - 3 x^2 y^2 + 1$ as
-a sum of squares, a pseudoexpectation where $\tilde{\mathbb{E}}[p(x,y)] = -1$.
+writing the Motzkin polynomial $$p(x, y) = x^4 y^2 + x^2 y^4 - 3 x^2 y^2 + 1$$ as
+a sum of squares, a pseudoexpectation where $$\tilde{\mathbb{E}}[p(x,y)] = -1$$.
 
 {% capture python_code %}
 x, y = sp.symbols('x y')
@@ -588,9 +588,9 @@ prob_d.solve()
 After solving the SOS relaxation, we can produce a feasible solution using the
 following rounding algorithm:
 
-1. Sample $v$ uniformly at random from the sphere
-2. Compute $M = \tilde{\mathbb{E}}_x[\langle v, x \rangle^4 xx^T]$
-3. Return the normalized top eigenvector of $M$
+1. Sample $$v$$ uniformly at random from the sphere
+2. Compute $$M = \tilde{\mathbb{E}}_x[\langle v, x \rangle^4 xx^T]$$
+3. Return the normalized top eigenvector of $$M$$
 
 We can implement this rounding algorithm using either the primal or dual
 formulation:
